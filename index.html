@@ -2662,10 +2662,16 @@ function prosesSHAT(text) {
   };
   const tahapan_k1 = [];
   let inSection2 = false;
+  // v9.17 — deteksi header tabel 2 dibuat toleran (trim + case-insensitive):
+  // sebelumnya mencocokkan PERSIS 'No.'/'Wilayah' (case & spasi sensitif) —
+  // kalau sel header sheet berubah dikit (spasi ekstra, huruf kecil/besar),
+  // seluruh tabel "Sebaran Tahapan Potensi K1 per Desa" jadi kosong (cuma
+  // baris TOTAL=0) walau tabel 1 (ringkasan atas) tetap benar, karena
+  // deteksinya beda logika. Dicocokkan juga longgar terhadap 'no' saja.
+  const norm = (v) => (v || '').toString().trim().toLowerCase();
   for (const r of rows) {
-    // Penanda tabel 2 harus r[1]==='Wilayah' — header tabel 1 juga punya row[0]==='No.'
-    // dan mengandung 'Potensi K1' di kolomnya, jadi tidak bisa dipakai sendirian.
-    if (r[0] === 'No.' && r[1] === 'Wilayah') { inSection2 = true; continue; }
+    const c0 = norm(r[0]), c1 = norm(r[1]);
+    if ((c0 === 'no.' || c0 === 'no') && c1 === 'wilayah') { inSection2 = true; continue; }
     if (inSection2) {
       if (!r[0] || !/^\d+$/.test(r[0].trim())) continue;
       const potensiK1 = parseIdNumber(r[2]), pengesahan = parseIdNumber(r[4]), prosesSert = parseIdNumber(r[6]);
