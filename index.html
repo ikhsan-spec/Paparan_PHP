@@ -992,6 +992,31 @@ function pelaporanKeArray(x) {
   return [];
 }
 
+function backfillNamaPpatDariSeed(pp) {
+  // v9.25 — Google Sheets otomatis mengubah teks yg mirip domain (mis. "M.Kn"
+  // pada gelar notaris) menjadi HYPERLINK. Saat sel berisi hyperlink hasil
+  // auto-convert itu, endpoint gviz (live-fetch anonim) mengembalikan nilai
+  // KOSONG utk sel tsb — ini keterbatasan permanen di sisi Google, bukan bug
+  // kode kita. Sbg mitigasi, kalau nama PPAT dari live-fetch kosong padahal
+  // jumlah barisnya SAMA PERSIS dgn data SEED (hasil build_all.py terakhir),
+  // pinjam nama_ppat dari SEED berdasarkan posisi baris yg sama.
+  try {
+    const seed = window.__PAPARAN_SEED__ && window.__PAPARAN_SEED__.ppat_ppats;
+    if (!seed || !seed.pelaporan || !pp || !pp.pelaporan) return pp;
+    ['tercepat', 'terlambat'].forEach(label => {
+      const live = pelaporanKeArray(pp.pelaporan[label]);
+      const seedArr = pelaporanKeArray(seed.pelaporan[label]);
+      if (live.length && live.length === seedArr.length) {
+        live.forEach((row, i) => {
+          if (!row.nama_ppat && seedArr[i] && seedArr[i].nama_ppat) row.nama_ppat = seedArr[i].nama_ppat;
+        });
+      }
+      pp.pelaporan[label] = live;
+    });
+  } catch (e) {}
+  return pp;
+}
+
 function parseKinerjaPPAT(text) {
   // v9.15 — REWRITE TOTAL, mirror PERSIS parse_kinerja_ppat() Python: sheet
   // sumber berubah SKEMA (bukan cuma data) — lihat komentar lengkap di
@@ -2542,7 +2567,7 @@ async function liveRefresh(opts) {
     const r = prosesAllProses(txtAll, manualPrev);
     const shat = prosesSHAT(txtShat);
     const layanan_prioritas = txtLayananPrioritas != null ? parseLayananPrioritas(txtLayananPrioritas) : r.layanan_prioritas;
-    const ppat_ppats = txtKinerjaPpat != null ? parseKinerjaPPAT(txtKinerjaPpat) : r.ppat_ppats;
+    const ppat_ppats = backfillNamaPpatDariSeed(txtKinerjaPpat != null ? parseKinerjaPPAT(txtKinerjaPpat) : r.ppat_ppats);
     DATA = {
       layanan_harian: r.layanan_harian, survei_pemetaan_crossmetric: r.survei_pemetaan_crossmetric, wakaf: r.wakaf, bmn: r.bmn, bmn_rutin: r.bmn_rutin, bmd_pemprov: r.bmd_pemprov, bmd_pemkab: r.bmd_pemkab, tkd: r.tkd,
       berkas_ditutup: r.berkas_ditutup, layanan_prioritas, ppat_ppats, ptsl: { shat },
