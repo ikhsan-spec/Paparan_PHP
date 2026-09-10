@@ -992,6 +992,33 @@ function pelaporanKeArray(x) {
   return [];
 }
 
+function backfillResiduDariSeed(shat) {
+  // v9.26 — BUG NYATA (sekelas v9.25/M.Kn): tabel "RESIDU (per Tahun)" di tab
+  // "Progres SHAT_PTSL" TERNYATA tidak ikut kebaca sama sekali oleh endpoint
+  // gviz (live-fetch anonim) — sudah dicek langsung ke gviz, tabelnya memang
+  // tidak muncul di hasil publiknya, beda dgn CSV hasil download manual yg
+  // dipakai compute_stats.py (di sana tabelnya normal kebaca). ini keterbatasan
+  // Google di sisi gviz anonim, BUKAN bug kode kita. Tanpa tabel ini,
+  // residu_lama SALAH jatuh ke proxy lama 'k1_pbt_sebelumnya' (nilainya =
+  // total K1, jauh lebih besar dari residu yg benar) sehingga "Total Residu"
+  // tampil jauh lebih besar dari semestinya (mis. 6.525 padahal semestinya
+  // 4.747). Mitigasi: kalau live-fetch tidak menemukan tabel RESIDU per
+  // tahun, pinjam residu_lama/residu_total/residu_per_tahun dari SEED (hasil
+  // build_all.py terakhir, yg dihitung dari CSV download manual yg benar).
+  try {
+    const seedShat = window.__PAPARAN_SEED__ && window.__PAPARAN_SEED__.ptsl && window.__PAPARAN_SEED__.ptsl.shat;
+    if (!shat || !shat.summary) return shat;
+    const liveRincian = shat.summary.residu_per_tahun;
+    const seedRincian = seedShat && seedShat.summary && seedShat.summary.residu_per_tahun;
+    if ((!liveRincian || !liveRincian.length) && seedRincian && seedRincian.length) {
+      shat.summary.residu_lama = seedShat.summary.residu_lama;
+      shat.summary.residu_per_tahun = seedRincian;
+      shat.summary.residu_total = shat.summary.residu_2026 + seedShat.summary.residu_lama;
+    }
+  } catch (e) {}
+  return shat;
+}
+
 function backfillNamaPpatDariSeed(pp) {
   // v9.25 — Google Sheets otomatis mengubah teks yg mirip domain (mis. "M.Kn"
   // pada gelar notaris) menjadi HYPERLINK. Saat sel berisi hyperlink hasil
@@ -1868,12 +1895,12 @@ function renderPTSL() {
             <div class="flex items-stretch mt-2">
               <div class="pr-4">
                 <div class="stat-num text-xl" style="color:#C0392B" id="shatResidu2026">0</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Tahun 2026 — sudah K1, belum diserahkan</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Residu 2026</div>
               </div>
               <div class="self-center shrink-0" style="width:4px;min-height:36px;border-radius:999px;background:#F1C4BE"></div>
               <div class="pl-4">
                 <div class="stat-num text-xl" style="color:#B8860B" id="shatResiduLama">0</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Tahun 2018–2025 (dijumlahkan)</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Residu 2018 s.d. 2025</div>
               </div>
             </div>
             <div class="text-[10px] font-700 italic mt-2" style="color:#C0392B" id="shatResiduTotal"></div>
@@ -2466,9 +2493,9 @@ document.getElementById('btnExportPptx').addEventListener('click', () => {
   const resHalfW = resInnerW / 2 - resPad;
   const resRightX = resCenterX + resPad;
   s6.addText(`${fmtNum(smx.residu_2026)}`, { x: resInnerX, y: resY + 0.28, w: resHalfW, h: 0.36, fontFace: 'Cambria', fontSize: 20, bold: true, color: RESIDU_RED, isTextBox: true, margin: 0 });
-  s6.addText('Tahun 2026 — sudah K1, belum diserahkan', { x: resInnerX, y: resY + 0.66, w: resHalfW, h: 0.3, fontFace: 'Calibri', fontSize: 7, color: SLATE, isTextBox: true, margin: 0 });
+  s6.addText('Residu 2026', { x: resInnerX, y: resY + 0.66, w: resHalfW, h: 0.3, fontFace: 'Calibri', fontSize: 7, color: SLATE, isTextBox: true, margin: 0 });
   s6.addText(`${fmtNum(smx.residu_lama)}`, { x: resRightX, y: resY + 0.28, w: resHalfW, h: 0.36, fontFace: 'Cambria', fontSize: 20, bold: true, color: RESIDU_AMBER, isTextBox: true, margin: 0 });
-  s6.addText('Tahun 2018–2025 (dijumlahkan)', { x: resRightX, y: resY + 0.66, w: resHalfW, h: 0.3, fontFace: 'Calibri', fontSize: 7, color: SLATE, isTextBox: true, margin: 0 });
+  s6.addText('Residu 2018 s.d. 2025', { x: resRightX, y: resY + 0.66, w: resHalfW, h: 0.3, fontFace: 'Calibri', fontSize: 7, color: SLATE, isTextBox: true, margin: 0 });
   s6.addShape(pres.ShapeType.roundRect, { x: resCenterX - resDividerW / 2, y: resY + 0.22, w: resDividerW, h: 0.56, rectRadius: resDividerW / 2, fill: { color: 'F1C4BE' }, line: { type: 'none' } });
   // v9.6 — dikoreksi: rincian per tahun individual TERSEDIA (sumber: Google
   // Sheet "Progres SHAT_PTSL", tabel RESIDU per tahun).
@@ -2565,7 +2592,7 @@ async function liveRefresh(opts) {
     const manualPrev = {};
     MANUAL_KATEGORI_KEYS.forEach(k => { manualPrev[k] = DATA && DATA[k] ? manualSnapshot(DATA[k]) : null; });
     const r = prosesAllProses(txtAll, manualPrev);
-    const shat = prosesSHAT(txtShat);
+    const shat = backfillResiduDariSeed(prosesSHAT(txtShat));
     const layanan_prioritas = txtLayananPrioritas != null ? parseLayananPrioritas(txtLayananPrioritas) : r.layanan_prioritas;
     const ppat_ppats = backfillNamaPpatDariSeed(txtKinerjaPpat != null ? parseKinerjaPPAT(txtKinerjaPpat) : r.ppat_ppats);
     DATA = {
@@ -2974,12 +3001,12 @@ function renderPrintView() {
     <div style="display:flex;align-items:stretch">
       <div style="flex:1;padding-right:18px">
         <div style="font-family:Cambria,serif;font-size:20px;font-weight:800;color:#C0392B">${fmtNum(sm.residu_2026)}</div>
-        <div style="font-size:7px;color:#445566;margin-top:2px">Tahun 2026 — sudah K1, belum diserahkan</div>
+        <div style="font-size:7px;color:#445566;margin-top:2px">Residu 2026</div>
       </div>
       <div style="width:3px;flex-shrink:0;min-height:34px;align-self:center;border-radius:999px;background:#F1C4BE"></div>
       <div style="flex:1;padding-left:18px">
         <div style="font-family:Cambria,serif;font-size:20px;font-weight:800;color:#B8860B">${fmtNum(sm.residu_lama)}</div>
-        <div style="font-size:7px;color:#445566;margin-top:2px">Tahun 2018–2025 (dijumlahkan)</div>
+        <div style="font-size:7px;color:#445566;margin-top:2px">Residu 2018 s.d. 2025</div>
       </div>
     </div>
     <div style="font-size:7px;font-weight:700;font-style:italic;color:#C0392B;margin-top:8px">Total Residu: ${fmtNum(sm.residu_total)} bidang (2018–2025 per tahun — ${(sm.residu_per_tahun || []).filter(x => x[0] !== '2026' && x[1] > 0).map(x => `${x[0]}: ${fmtNum(x[1])}`).join('  &bull;  ') || 'tidak ada data'}; 2026 = K1 sudah terbit belum diserahkan)</div>
