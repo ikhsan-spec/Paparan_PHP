@@ -69,7 +69,9 @@
         <span class="text-[10px] text-slate-300">Nama Pengisi:</span>
         <input id="inputPengisi" type="text" placeholder="nama Anda" class="text-[11px] bg-transparent border-0 outline-none w-24 placeholder:text-slate-400">
       </span>
+      <a id="linkGoogleSheet" href="#" target="_blank" rel="noopener" class="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg font-600 inline-flex items-center gap-1" title="Buka Google Sheets sumber data (DATA PAPARAN) di tab baru — untuk koreksi/update data mentah oleh pengelola kegiatan.">📄 Buka Sumber Data</a>
       <button id="btnRefreshLive" class="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg font-600">🔄 Refresh</button>
+      <button id="btnResetCache" class="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg font-600" title="Pakai ini kalau tampilan terasa 'nyangkut'/tidak sesuai data terbaru (jarang dibutuhkan — sejak v9.19 versi baru otomatis menggantikan cache lama). Menghapus data tersimpan di browser ini lalu memuat ulang dari file.">🗑️ Reset Cache</button>
       <button id="btnUploadPanel" class="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg font-600">📤 Update Manual</button>
       <button id="btnSaveManualJson" class="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg font-600" title="Unduh seluruh isian manual (BMN/BMN (Rutin)/BMD Pemprov Banten/BMD Pemkab Lebak/Wakaf/TKD) sebagai manual_input.json — timpa data/manual_input.json supaya generator PPTX resmi (compute_stats.py) ikut memakai nilai yang sama.">💾 Simpan Data Manual</button>
       <button id="btnLoadManualJson" class="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg font-600" title="Muat manual_input.json (mis. yang dipakai generator PPTX resmi) supaya dashboard ikut menampilkan nilai manual yang sama.">📂 Muat Data Manual</button>
@@ -104,12 +106,7 @@
 <nav class="max-w-7xl mx-auto px-4 pt-3 flex gap-2 overflow-x-auto">
   <button class="tabbtn active" data-tab="ringkasan">Ringkasan</button>
   <button class="tabbtn" data-tab="layanan">Layanan Harian</button>
-  <button class="tabbtn" data-tab="bmn">Sertipikasi Aset BMN</button>
-  <button class="tabbtn" data-tab="bmdpemprov">Sertipikasi Aset BMD Pemprov Banten</button>
-  <button class="tabbtn" data-tab="bmdpemkab">Sertipikasi Aset BMD Pemkab Lebak</button>
-  <button class="tabbtn" data-tab="wakaf">Progres Sertipikasi Tanah Wakaf</button>
-  <button class="tabbtn" data-tab="bmnrutin">Sertipikasi Aset BMN (Rutin)</button>
-  <button class="tabbtn" data-tab="tkd">Sertipikasi Aset Tanah Kas Desa (TKD)</button>
+  <button class="tabbtn" data-tab="hat">Sertipikasi HAT</button>
   <button class="tabbtn" data-tab="ptsl">PTSL — SHAT</button>
 </nav>
 
@@ -140,12 +137,7 @@
   </section>
 
   <section id="tab-layanan" class="hidden space-y-4"></section>
-  <section id="tab-bmn" class="hidden space-y-4"></section>
-  <section id="tab-bmdpemprov" class="hidden space-y-4"></section>
-  <section id="tab-bmdpemkab" class="hidden space-y-4"></section>
-  <section id="tab-wakaf" class="hidden space-y-4"></section>
-  <section id="tab-bmnrutin" class="hidden space-y-4"></section>
-  <section id="tab-tkd" class="hidden space-y-4"></section>
+  <section id="tab-hat" class="hidden space-y-4"></section>
   <section id="tab-ptsl" class="hidden space-y-4"></section>
 
 </main>
@@ -156,1545 +148,7 @@
   Dokumen internal — Kantor Pertanahan Kabupaten Lebak &amp; Kantor Wilayah BPN Provinsi Banten. Paparan ini dimurnikan untuk Seksi Penetapan Hak dan Pendaftaran (BMN/BMN (Rutin)/BMD Pemprov Banten/BMD Pemkab Lebak/Wakaf/Tanah Kas Desa (TKD) tetap seluruh berkas aktif kategorinya). Data diproses langsung di browser Anda (tidak dikirim ke server manapun). PDDM = Berkas Lewat Jatuh Tempo. Pemetaan Posisi→Seksi &amp; target PTSL adalah hasil olahan — lihat docs/KONEKSI.md untuk metodologi lengkap.
 </footer>
 
-<script>window.__PAPARAN_SEED__ = {
-  "generated_at": "2026-09-07",
-  "layanan_harian": {
-    "label": "Layanan Harian — Seksi Penetapan Hak dan Pendaftaran (Berkas Aktif — Berkas Ditutup dihitung terpisah)",
-    "total": 158,
-    "selesai": 0,
-    "selesai_manual": null,
-    "selesai_efektif": 0,
-    "target": null,
-    "pct_capaian": null,
-    "basis_selesai": "sipelta",
-    "data_tidak_konsisten": 0,
-    "diserahkan": 0,
-    "dalam_proses": 65,
-    "overdue": 59,
-    "akan_jatuh_tempo": 34,
-    "dalam_proses_per_tahun": [
-      [
-        "2025",
-        1
-      ],
-      [
-        "2026",
-        64
-      ]
-    ],
-    "akan_jatuh_tempo_per_tahun": [
-      [
-        "2026",
-        34
-      ]
-    ],
-    "overdue_per_tahun": [
-      [
-        "2026",
-        59
-      ]
-    ],
-    "dalam_proses_per_kegiatan": [
-      [
-        "Pendaftaran Tanah Pertama Kali Pemberian Hak",
-        39
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-        11
-      ],
-      [
-        "Pemisahan Bidang",
-        7
-      ],
-      [
-        "Sertipikat Pengganti Karena Hilang",
-        3
-      ],
-      [
-        "Permohonan SK Perpanjangan Hak Guna Bangunan Perorangan",
-        2
-      ],
-      [
-        "Penggabungan Bidang",
-        1
-      ],
-      [
-        "Pemecahan Bidang",
-        1
-      ],
-      [
-        "Permohonan SK Pemberian Hak Milik Perorangan",
-        1
-      ]
-    ],
-    "akan_jatuh_tempo_per_kegiatan": [
-      [
-        "Pemisahan Bidang",
-        7
-      ],
-      [
-        "Penggabungan Bidang",
-        7
-      ],
-      [
-        "Merger Hak Tanggungan",
-        3
-      ],
-      [
-        "Perubahan Hak Atas Tanah",
-        3
-      ],
-      [
-        "Ganti Nama Pemegang Hak Tanggungan",
-        3
-      ],
-      [
-        "Hapusnya Hak",
-        3
-      ],
-      [
-        "Peralihan Hak - Pewarisan",
-        2
-      ],
-      [
-        "Peralihan Hak - Jual Beli",
-        2
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-        1
-      ],
-      [
-        "Surat Keterangan Pendaftaran Tanah",
-        1
-      ],
-      [
-        "Pemecahan Bidang",
-        1
-      ],
-      [
-        "Wakaf dari Tanah Yang Sudah Bersertipikat",
-        1
-      ]
-    ],
-    "overdue_per_kegiatan": [
-      [
-        "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-        19
-      ],
-      [
-        "Pemisahan Bidang",
-        15
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",
-        10
-      ],
-      [
-        "Pemecahan Bidang",
-        5
-      ],
-      [
-        "Pelantikan PPAT Sementara",
-        4
-      ],
-      [
-        "Penggabungan Bidang",
-        2
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Pemberian Hak",
-        1
-      ],
-      [
-        "Permohonan SK Pemberian Hak Milik Perorangan",
-        1
-      ],
-      [
-        "Wakaf dari Tanah Yang Sudah Bersertipikat",
-        1
-      ],
-      [
-        "Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",
-        1
-      ]
-    ],
-    "dalam_proses_per_tahun_kegiatan": [
-      [
-        "2025",
-        [
-          [
-            "Pendaftaran Tanah Pertama Kali Pemberian Hak",
-            1
-          ]
-        ]
-      ],
-      [
-        "2026",
-        [
-          [
-            "Pendaftaran Tanah Pertama Kali Pemberian Hak",
-            38
-          ],
-          [
-            "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-            11
-          ],
-          [
-            "Pemisahan Bidang",
-            7
-          ],
-          [
-            "Sertipikat Pengganti Karena Hilang",
-            3
-          ],
-          [
-            "Permohonan SK Perpanjangan Hak Guna Bangunan Perorangan",
-            2
-          ],
-          [
-            "Penggabungan Bidang",
-            1
-          ],
-          [
-            "Pemecahan Bidang",
-            1
-          ],
-          [
-            "Permohonan SK Pemberian Hak Milik Perorangan",
-            1
-          ]
-        ]
-      ]
-    ],
-    "akan_jatuh_tempo_per_tahun_kegiatan": [
-      [
-        "2026",
-        [
-          [
-            "Pemisahan Bidang",
-            7
-          ],
-          [
-            "Penggabungan Bidang",
-            7
-          ],
-          [
-            "Merger Hak Tanggungan",
-            3
-          ],
-          [
-            "Perubahan Hak Atas Tanah",
-            3
-          ],
-          [
-            "Ganti Nama Pemegang Hak Tanggungan",
-            3
-          ],
-          [
-            "Hapusnya Hak",
-            3
-          ],
-          [
-            "Peralihan Hak - Pewarisan",
-            2
-          ],
-          [
-            "Peralihan Hak - Jual Beli",
-            2
-          ],
-          [
-            "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-            1
-          ],
-          [
-            "Surat Keterangan Pendaftaran Tanah",
-            1
-          ],
-          [
-            "Pemecahan Bidang",
-            1
-          ],
-          [
-            "Wakaf dari Tanah Yang Sudah Bersertipikat",
-            1
-          ]
-        ]
-      ]
-    ],
-    "overdue_per_tahun_kegiatan": [
-      [
-        "2026",
-        [
-          [
-            "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-            19
-          ],
-          [
-            "Pemisahan Bidang",
-            15
-          ],
-          [
-            "Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",
-            10
-          ],
-          [
-            "Pemecahan Bidang",
-            5
-          ],
-          [
-            "Pelantikan PPAT Sementara",
-            4
-          ],
-          [
-            "Penggabungan Bidang",
-            2
-          ],
-          [
-            "Pendaftaran Tanah Pertama Kali Pemberian Hak",
-            1
-          ],
-          [
-            "Permohonan SK Pemberian Hak Milik Perorangan",
-            1
-          ],
-          [
-            "Wakaf dari Tanah Yang Sudah Bersertipikat",
-            1
-          ],
-          [
-            "Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",
-            1
-          ]
-        ]
-      ]
-    ],
-    "per_kegiatan": [
-      [
-        "Pendaftaran Tanah Pertama Kali Pemberian Hak",
-        40
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-        31
-      ],
-      [
-        "Pemisahan Bidang",
-        29
-      ],
-      [
-        "Penggabungan Bidang",
-        10
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",
-        10
-      ],
-      [
-        "Pemecahan Bidang",
-        7
-      ],
-      [
-        "Pelantikan PPAT Sementara",
-        4
-      ],
-      [
-        "Merger Hak Tanggungan",
-        3
-      ],
-      [
-        "Perubahan Hak Atas Tanah",
-        3
-      ],
-      [
-        "Ganti Nama Pemegang Hak Tanggungan",
-        3
-      ],
-      [
-        "Hapusnya Hak",
-        3
-      ],
-      [
-        "Sertipikat Pengganti Karena Hilang",
-        3
-      ],
-      [
-        "Permohonan SK Pemberian Hak Milik Perorangan",
-        2
-      ],
-      [
-        "Peralihan Hak - Pewarisan",
-        2
-      ],
-      [
-        "Peralihan Hak - Jual Beli",
-        2
-      ]
-    ],
-    "per_posisi_aktif": [
-      [
-        "Pelaksana Kelompok Substansi Pengukuran Dan Pemetan Kadastral",
-        39
-      ],
-      [
-        "Pelaksana Kelompok Substansi Pendaftaran Tanah dan Ruang, Tanah Komunal dan Hubungan Kelembagaan",
-        28
-      ],
-      [
-        "Tim Panitia",
-        25
-      ],
-      [
-        "Petugas Ukur",
-        23
-      ],
-      [
-        "Pelaksana Kelompok Substansi Pemeliharaan Data Hak Tanah dan Pembinaan PPAT",
-        14
-      ],
-      [
-        "Petugas Pemetaan",
-        10
-      ],
-      [
-        "Kepala Seksi Penetapan Hak dan Pendaftaran",
-        5
-      ],
-      [
-        "Petugas Kontrol Pengumuman",
-        5
-      ],
-      [
-        "Pelaksana Alih Media Buku Tanah",
-        4
-      ],
-      [
-        "Ketua Panitia/Ketua Peneliti Tanah",
-        4
-      ]
-    ],
-    "per_posisi_overdue": [
-      [
-        "Pelaksana Kelompok Substansi Pengukuran Dan Pemetan Kadastral",
-        25
-      ],
-      [
-        "Petugas Ukur",
-        9
-      ],
-      [
-        "Pelaksana Kelompok Substansi Pendaftaran Tanah dan Ruang, Tanah Komunal dan Hubungan Kelembagaan",
-        6
-      ],
-      [
-        "Pelaksana Kelompok Substansi Pemeliharaan Data Hak Tanah dan Pembinaan PPAT",
-        5
-      ],
-      [
-        "Kepala Seksi Penetapan Hak dan Pendaftaran",
-        4
-      ],
-      [
-        "Petugas Pemetaan",
-        4
-      ],
-      [
-        "Ketua Panitia/Ketua Peneliti Tanah",
-        4
-      ],
-      [
-        "Petugas Kontrol Pengumuman",
-        1
-      ],
-      [
-        "Koordinator Kelompok Substansi Pemeliharaan Hak Tanah, Ruang Dan Pembinaan PPAT",
-        1
-      ]
-    ]
-  },
-  "survei_pemetaan_crossmetric": {
-    "label": "Layanan Seksi Penetapan Hak dan Pendaftaran — Posisi Terakhir di Seksi Survei dan Pemetaan",
-    "total": 72,
-    "selesai": 0,
-    "selesai_manual": null,
-    "selesai_efektif": 0,
-    "target": null,
-    "pct_capaian": null,
-    "basis_selesai": "sipelta",
-    "data_tidak_konsisten": 0,
-    "diserahkan": 0,
-    "dalam_proses": 19,
-    "overdue": 38,
-    "akan_jatuh_tempo": 15,
-    "dalam_proses_per_tahun": [
-      [
-        "2026",
-        19
-      ]
-    ],
-    "akan_jatuh_tempo_per_tahun": [
-      [
-        "2026",
-        15
-      ]
-    ],
-    "overdue_per_tahun": [
-      [
-        "2026",
-        38
-      ]
-    ],
-    "dalam_proses_per_kegiatan": [
-      [
-        "Pendaftaran Tanah Pertama Kali Pemberian Hak",
-        10
-      ],
-      [
-        "Pemisahan Bidang",
-        7
-      ],
-      [
-        "Penggabungan Bidang",
-        1
-      ],
-      [
-        "Pemecahan Bidang",
-        1
-      ]
-    ],
-    "akan_jatuh_tempo_per_kegiatan": [
-      [
-        "Pemisahan Bidang",
-        7
-      ],
-      [
-        "Penggabungan Bidang",
-        7
-      ],
-      [
-        "Pemecahan Bidang",
-        1
-      ]
-    ],
-    "overdue_per_kegiatan": [
-      [
-        "Pemisahan Bidang",
-        13
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",
-        10
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-        9
-      ],
-      [
-        "Pemecahan Bidang",
-        4
-      ],
-      [
-        "Penggabungan Bidang",
-        1
-      ],
-      [
-        "Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",
-        1
-      ]
-    ],
-    "dalam_proses_per_tahun_kegiatan": [
-      [
-        "2026",
-        [
-          [
-            "Pendaftaran Tanah Pertama Kali Pemberian Hak",
-            10
-          ],
-          [
-            "Pemisahan Bidang",
-            7
-          ],
-          [
-            "Penggabungan Bidang",
-            1
-          ],
-          [
-            "Pemecahan Bidang",
-            1
-          ]
-        ]
-      ]
-    ],
-    "akan_jatuh_tempo_per_tahun_kegiatan": [
-      [
-        "2026",
-        [
-          [
-            "Pemisahan Bidang",
-            7
-          ],
-          [
-            "Penggabungan Bidang",
-            7
-          ],
-          [
-            "Pemecahan Bidang",
-            1
-          ]
-        ]
-      ]
-    ],
-    "overdue_per_tahun_kegiatan": [
-      [
-        "2026",
-        [
-          [
-            "Pemisahan Bidang",
-            13
-          ],
-          [
-            "Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",
-            10
-          ],
-          [
-            "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-            9
-          ],
-          [
-            "Pemecahan Bidang",
-            4
-          ],
-          [
-            "Penggabungan Bidang",
-            1
-          ],
-          [
-            "Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",
-            1
-          ]
-        ]
-      ]
-    ],
-    "per_kegiatan": [
-      [
-        "Pemisahan Bidang",
-        27
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",
-        10
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Pemberian Hak",
-        10
-      ],
-      [
-        "Penggabungan Bidang",
-        9
-      ],
-      [
-        "Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",
-        9
-      ],
-      [
-        "Pemecahan Bidang",
-        6
-      ],
-      [
-        "Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",
-        1
-      ]
-    ],
-    "per_posisi_aktif": [
-      [
-        "Pelaksana Kelompok Substansi Pengukuran Dan Pemetan Kadastral",
-        39
-      ],
-      [
-        "Petugas Ukur",
-        23
-      ],
-      [
-        "Petugas Pemetaan",
-        10
-      ]
-    ],
-    "per_posisi_overdue": [
-      [
-        "Pelaksana Kelompok Substansi Pengukuran Dan Pemetan Kadastral",
-        25
-      ],
-      [
-        "Petugas Ukur",
-        9
-      ],
-      [
-        "Petugas Pemetaan",
-        4
-      ]
-    ]
-  },
-  "wakaf": {
-    "target": 300.0,
-    "pemberkasan": 42.0,
-    "terdaftar": 36.0,
-    "pengukuran": 10,
-    "pbt": 24.0,
-    "panitia": 0,
-    "sk_hak": 24.0,
-    "sertel": 24.0,
-    "pct_pemberkasan": 14.0,
-    "pct_terdaftar": 12.0,
-    "pct_pengukuran": 3.33,
-    "pct_pbt": 8.0,
-    "pct_panitia": 0.0,
-    "pct_sk_hak": 8.0,
-    "pct_sertel": 8.0,
-    "auto": true,
-    "label": "Progres Sertipikasi Tanah Wakaf",
-    "ditutup": 0
-  },
-  "bmn": {
-    "target": 2.0,
-    "pemberkasan": 2.0,
-    "terdaftar": 2.0,
-    "pengukuran": 0,
-    "pbt": 2.0,
-    "panitia": 0,
-    "sk_hak": 2.0,
-    "sertel": 2.0,
-    "pct_pemberkasan": 100.0,
-    "pct_terdaftar": 100.0,
-    "pct_pengukuran": 0.0,
-    "pct_pbt": 100.0,
-    "pct_panitia": 0.0,
-    "pct_sk_hak": 100.0,
-    "pct_sertel": 100.0,
-    "auto": true,
-    "label": "Sertipikasi Aset BMN",
-    "ditutup": 0
-  },
-  "bmn_rutin": {
-    "target": null,
-    "pemberkasan": null,
-    "terdaftar": 0,
-    "pengukuran": 0,
-    "pbt": null,
-    "panitia": 0,
-    "sk_hak": null,
-    "sertel": null,
-    "pct_pemberkasan": null,
-    "pct_terdaftar": null,
-    "pct_pengukuran": null,
-    "pct_pbt": null,
-    "pct_panitia": null,
-    "pct_sk_hak": null,
-    "pct_sertel": null,
-    "auto": true,
-    "label": "Sertipikasi Aset BMN (Rutin)",
-    "ditutup": 0
-  },
-  "bmd_pemprov": {
-    "target": null,
-    "pemberkasan": null,
-    "terdaftar": 0,
-    "pengukuran": 0,
-    "pbt": null,
-    "panitia": 0,
-    "sk_hak": null,
-    "sertel": null,
-    "pct_pemberkasan": null,
-    "pct_terdaftar": null,
-    "pct_pengukuran": null,
-    "pct_pbt": null,
-    "pct_panitia": null,
-    "pct_sk_hak": null,
-    "pct_sertel": null,
-    "auto": true,
-    "label": "Sertipikasi Aset BMD Pemprov Banten",
-    "ditutup": 0
-  },
-  "bmd_pemkab": {
-    "target": 70.0,
-    "pemberkasan": 212.0,
-    "terdaftar": 164.0,
-    "pengukuran": 10,
-    "pbt": 163.0,
-    "panitia": 22,
-    "sk_hak": 2.0,
-    "sertel": 124.0,
-    "pct_pemberkasan": 302.86,
-    "pct_terdaftar": 234.29,
-    "pct_pengukuran": 14.29,
-    "pct_pbt": 232.86,
-    "pct_panitia": 31.43,
-    "pct_sk_hak": 2.86,
-    "pct_sertel": 177.14,
-    "auto": true,
-    "label": "Sertipikasi Aset BMD Pemkab Lebak",
-    "ditutup": 0
-  },
-  "tkd": {
-    "target": null,
-    "pemberkasan": null,
-    "terdaftar": 0,
-    "pengukuran": 0,
-    "pbt": null,
-    "panitia": 0,
-    "sk_hak": null,
-    "sertel": null,
-    "pct_pemberkasan": null,
-    "pct_terdaftar": null,
-    "pct_pengukuran": null,
-    "pct_pbt": null,
-    "pct_panitia": null,
-    "pct_sk_hak": null,
-    "pct_sertel": null,
-    "auto": true,
-    "label": "Sertipikasi Aset Tanah Kas Desa (TKD)",
-    "ditutup": 0
-  },
-  "berkas_ditutup": {
-    "total": 0,
-    "pnbp": 0,
-    "per_kegiatan": []
-  },
-  "ptsl": {
-    "shat": {
-      "per_lokasi": [
-        {
-          "no": "1",
-          "kecamatan": "PANGGARANGAN",
-          "desa": "JATAKE",
-          "target_shat_sumber": 0.0,
-          "puldadis": 307.0,
-          "pemberkasan": 306.0,
-          "potensi_k1": 10.0,
-          "k1": 255.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 169.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 255.0,
-          "pct_k1_dari_puldadis": 83.06,
-          "pct_diserahkan_dari_puldadis": 0.0
-        },
-        {
-          "no": "2",
-          "kecamatan": "PANGGARANGAN",
-          "desa": "GUNUNGGEDE",
-          "target_shat_sumber": 0.0,
-          "puldadis": 653.0,
-          "pemberkasan": 653.0,
-          "potensi_k1": 13.0,
-          "k1": 208.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 99.0,
-          "diserahkan": 99.0,
-          "k1_pbt_sebelumnya": 208.0,
-          "pct_k1_dari_puldadis": 31.85,
-          "pct_diserahkan_dari_puldadis": 15.16
-        },
-        {
-          "no": "3",
-          "kecamatan": "PANGGARANGAN",
-          "desa": "SUKAJADI",
-          "target_shat_sumber": 0.0,
-          "puldadis": 126.0,
-          "pemberkasan": 126.0,
-          "potensi_k1": 58.0,
-          "k1": 0.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 0.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 0.0,
-          "pct_k1_dari_puldadis": 0.0,
-          "pct_diserahkan_dari_puldadis": 0.0
-        },
-        {
-          "no": "4",
-          "kecamatan": "PANGGARANGAN",
-          "desa": "CIBARENGKOK",
-          "target_shat_sumber": 0.0,
-          "puldadis": 246.0,
-          "pemberkasan": 246.0,
-          "potensi_k1": 0.0,
-          "k1": 246.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 216.0,
-          "diserahkan": 216.0,
-          "k1_pbt_sebelumnya": 246.0,
-          "pct_k1_dari_puldadis": 100.0,
-          "pct_diserahkan_dari_puldadis": 87.8
-        },
-        {
-          "no": "5",
-          "kecamatan": "PANGGARANGAN",
-          "desa": "SOGONG",
-          "target_shat_sumber": 0.0,
-          "puldadis": 928.0,
-          "pemberkasan": 928.0,
-          "potensi_k1": 152.0,
-          "k1": 554.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 151.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 554.0,
-          "pct_k1_dari_puldadis": 59.7,
-          "pct_diserahkan_dari_puldadis": 0.0
-        },
-        {
-          "no": "6",
-          "kecamatan": "MAJA",
-          "desa": "PASIRKACAPI",
-          "target_shat_sumber": 0.0,
-          "puldadis": 453.0,
-          "pemberkasan": 453.0,
-          "potensi_k1": 1.0,
-          "k1": 452.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 398.0,
-          "diserahkan": 398.0,
-          "k1_pbt_sebelumnya": 452.0,
-          "pct_k1_dari_puldadis": 99.78,
-          "pct_diserahkan_dari_puldadis": 87.86
-        },
-        {
-          "no": "7",
-          "kecamatan": "MAJA",
-          "desa": "BUYUT MEKAR",
-          "target_shat_sumber": 0.0,
-          "puldadis": 80.0,
-          "pemberkasan": 80.0,
-          "potensi_k1": 0.0,
-          "k1": 69.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 0.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 69.0,
-          "pct_k1_dari_puldadis": 86.25,
-          "pct_diserahkan_dari_puldadis": 0.0
-        },
-        {
-          "no": "8",
-          "kecamatan": "MAJA",
-          "desa": "GUBUGAN CIBEUREUM",
-          "target_shat_sumber": 0.0,
-          "puldadis": 612.0,
-          "pemberkasan": 612.0,
-          "potensi_k1": 0.0,
-          "k1": 0.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 0.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 0.0,
-          "pct_k1_dari_puldadis": 0.0,
-          "pct_diserahkan_dari_puldadis": 0.0
-        },
-        {
-          "no": "9",
-          "kecamatan": "MAJA",
-          "desa": "SANGIANG",
-          "target_shat_sumber": 0.0,
-          "puldadis": 580.0,
-          "pemberkasan": 580.0,
-          "potensi_k1": 86.0,
-          "k1": 197.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 197.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 197.0,
-          "pct_k1_dari_puldadis": 33.97,
-          "pct_diserahkan_dari_puldadis": 0.0
-        },
-        {
-          "no": "10",
-          "kecamatan": "MAJA",
-          "desa": "BINONG",
-          "target_shat_sumber": 0.0,
-          "puldadis": 497.0,
-          "pemberkasan": 497.0,
-          "potensi_k1": 39.0,
-          "k1": 440.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 310.0,
-          "diserahkan": 220.0,
-          "k1_pbt_sebelumnya": 440.0,
-          "pct_k1_dari_puldadis": 88.53,
-          "pct_diserahkan_dari_puldadis": 44.27
-        },
-        {
-          "no": "11",
-          "kecamatan": "CURUGBITUNG",
-          "desa": "CIPINING",
-          "target_shat_sumber": 0.0,
-          "puldadis": 273.0,
-          "pemberkasan": 273.0,
-          "potensi_k1": 148.0,
-          "k1": 13.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 13.0,
-          "diserahkan": 13.0,
-          "k1_pbt_sebelumnya": 13.0,
-          "pct_k1_dari_puldadis": 4.76,
-          "pct_diserahkan_dari_puldadis": 4.76
-        },
-        {
-          "no": "12",
-          "kecamatan": "CURUGBITUNG",
-          "desa": "CILAYANG",
-          "target_shat_sumber": 0.0,
-          "puldadis": 132.0,
-          "pemberkasan": 132.0,
-          "potensi_k1": 48.0,
-          "k1": 0.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 0.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 0.0,
-          "pct_k1_dari_puldadis": 0.0,
-          "pct_diserahkan_dari_puldadis": 0.0
-        },
-        {
-          "no": "13",
-          "kecamatan": "CIHARA",
-          "desa": "MEKARSARI",
-          "target_shat_sumber": 0.0,
-          "puldadis": 174.0,
-          "pemberkasan": 174.0,
-          "potensi_k1": 0.0,
-          "k1": 174.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 174.0,
-          "diserahkan": 174.0,
-          "k1_pbt_sebelumnya": 174.0,
-          "pct_k1_dari_puldadis": 100.0,
-          "pct_diserahkan_dari_puldadis": 100.0
-        },
-        {
-          "no": "14",
-          "kecamatan": "CIHARA",
-          "desa": "CITEUPUSEN",
-          "target_shat_sumber": 0.0,
-          "puldadis": 724.0,
-          "pemberkasan": 724.0,
-          "potensi_k1": 0.0,
-          "k1": 724.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 700.0,
-          "diserahkan": 700.0,
-          "k1_pbt_sebelumnya": 724.0,
-          "pct_k1_dari_puldadis": 100.0,
-          "pct_diserahkan_dari_puldadis": 96.69
-        },
-        {
-          "no": "15",
-          "kecamatan": "CIHARA",
-          "desa": "CIPARAHU",
-          "target_shat_sumber": 0.0,
-          "puldadis": 515.0,
-          "pemberkasan": 515.0,
-          "potensi_k1": 25.0,
-          "k1": 490.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 369.0,
-          "diserahkan": 368.0,
-          "k1_pbt_sebelumnya": 490.0,
-          "pct_k1_dari_puldadis": 95.15,
-          "pct_diserahkan_dari_puldadis": 71.46
-        },
-        {
-          "no": "16",
-          "kecamatan": "CIHARA",
-          "desa": "BARUNAI",
-          "target_shat_sumber": 0.0,
-          "puldadis": 401.0,
-          "pemberkasan": 401.0,
-          "potensi_k1": 221.0,
-          "k1": 67.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 0.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 67.0,
-          "pct_k1_dari_puldadis": 16.71,
-          "pct_diserahkan_dari_puldadis": 0.0
-        },
-        {
-          "no": "17",
-          "kecamatan": "CIHARA",
-          "desa": "KARANGKAMULYAN",
-          "target_shat_sumber": 0.0,
-          "puldadis": 600.0,
-          "pemberkasan": 600.0,
-          "potensi_k1": 17.0,
-          "k1": 583.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 561.0,
-          "diserahkan": 561.0,
-          "k1_pbt_sebelumnya": 583.0,
-          "pct_k1_dari_puldadis": 97.17,
-          "pct_diserahkan_dari_puldadis": 93.5
-        },
-        {
-          "no": "18",
-          "kecamatan": "CIGEMBLONG",
-          "desa": "PEUCANGPARI",
-          "target_shat_sumber": 0.0,
-          "puldadis": 60.0,
-          "pemberkasan": 60.0,
-          "potensi_k1": 60.0,
-          "k1": 0.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 0.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 0.0,
-          "pct_k1_dari_puldadis": 0.0,
-          "pct_diserahkan_dari_puldadis": 0.0
-        },
-        {
-          "no": "19",
-          "kecamatan": "BOJONGMANIK",
-          "desa": "KADURAHAYU",
-          "target_shat_sumber": 0.0,
-          "puldadis": 189.0,
-          "pemberkasan": 189.0,
-          "potensi_k1": 0.0,
-          "k1": 0.0,
-          "k2": 0.0,
-          "k3_1": 0.0,
-          "k3_2": 0.0,
-          "siap_diserahkan": 0.0,
-          "diserahkan": 0.0,
-          "k1_pbt_sebelumnya": 0.0,
-          "pct_k1_dari_puldadis": 0.0,
-          "pct_diserahkan_dari_puldadis": 0.0
-        }
-      ],
-      "summary": {
-        "target_shat": 8000,
-        "jumlah_kecamatan": 6,
-        "jumlah_desa": 19,
-        "puldadis": 7550.0,
-        "pemberkasan": 7549.0,
-        "potensi_k1": 878.0,
-        "k1": 4472.0,
-        "siap_diserahkan": 3357.0,
-        "diserahkan": 2749.0,
-        "k1_pbt_sebelumnya": 4472.0,
-        "pct_pemberkasan_dari_target": 94.36,
-        "pct_k1_dari_target": 55.9,
-        "pct_diserahkan_dari_target": 34.36,
-        "residu_2026": 1723.0,
-        "residu_lama": 2859.0,
-        "residu_per_tahun": [
-          [
-            "2018",
-            2666.0
-          ],
-          [
-            "2019",
-            47.0
-          ],
-          [
-            "2020",
-            0.0
-          ],
-          [
-            "2021",
-            0.0
-          ],
-          [
-            "2022",
-            47.0
-          ],
-          [
-            "2023",
-            95.0
-          ],
-          [
-            "2024",
-            4.0
-          ],
-          [
-            "2025",
-            0.0
-          ],
-          [
-            "2026",
-            0.0
-          ]
-        ],
-        "residu_total": 4582.0,
-        "k1_pbt_sebelumnya_legacy": 4472.0
-      },
-      "tahapan_k1": [
-        {
-          "wilayah": "Desa Sangiang Kec. Maja",
-          "potensi_k1": 86.0,
-          "pengumuman": 86.0,
-          "pengesahan": 0.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Binong Kec. Maja",
-          "potensi_k1": 39.0,
-          "pengumuman": 0.0,
-          "pengesahan": 36.0,
-          "sk": 0.0,
-          "proses_sertipikat": 3.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Pasirkacapi Kec. Maja",
-          "potensi_k1": 1.0,
-          "pengumuman": 0.0,
-          "pengesahan": 1.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Jatake Kec. Panggarangan",
-          "potensi_k1": 10.0,
-          "pengumuman": 6.0,
-          "pengesahan": 4.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Sogong Kec. Panggarangan",
-          "potensi_k1": 152.0,
-          "pengumuman": 145.0,
-          "pengesahan": 0.0,
-          "sk": 0.0,
-          "proses_sertipikat": 7.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Gununggede Kec. Panggarangan",
-          "potensi_k1": 13.0,
-          "pengumuman": 0.0,
-          "pengesahan": 13.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Sukajadi Kec. Panggarangan",
-          "potensi_k1": 58.0,
-          "pengumuman": 0.0,
-          "pengesahan": 58.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Cipining Kec. Curugbitung",
-          "potensi_k1": 148.0,
-          "pengumuman": 85.0,
-          "pengesahan": 15.0,
-          "sk": 0.0,
-          "proses_sertipikat": 48.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Cilayang Kec. Curugbitung",
-          "potensi_k1": 48.0,
-          "pengumuman": 11.0,
-          "pengesahan": 37.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Karangkamulyan Kec. Cihara",
-          "potensi_k1": 17.0,
-          "pengumuman": 17.0,
-          "pengesahan": 0.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Barunai Kec. Cihara",
-          "potensi_k1": 221.0,
-          "pengumuman": 221.0,
-          "pengesahan": 0.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Ciparahu Kec. Cihara",
-          "potensi_k1": 25.0,
-          "pengumuman": 0.0,
-          "pengesahan": 25.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        },
-        {
-          "wilayah": "Desa Peucangpari Kec. Cigemblong",
-          "potensi_k1": 60.0,
-          "pengumuman": 0.0,
-          "pengesahan": 60.0,
-          "sk": 0.0,
-          "proses_sertipikat": 0.0,
-          "di208": 0.0,
-          "unggah_bt": 0.0
-        }
-      ],
-      "tahapan_k1_total": {
-        "wilayah": "TOTAL",
-        "potensi_k1": 878.0,
-        "pengumuman": 571.0,
-        "pengesahan": 249.0,
-        "sk": 0.0,
-        "proses_sertipikat": 58.0,
-        "di208": 0.0,
-        "unggah_bt": 0.0
-      }
-    }
-  },
-  "layanan_prioritas": {
-    "status": "ok",
-    "items": [
-      {
-        "no": "1",
-        "jenis": "Pendaftaran SK",
-        "berkas_masuk": 7.0,
-        "selesai_spopp": 7.0,
-        "aktif_spopp": 0.0,
-        "aktif_melebihi_spopp": 0.0,
-        "luncuran_bulan_sebelumnya": 0.0,
-        "kinerja_pct": 100.0
-      },
-      {
-        "no": "2",
-        "jenis": "Peralihan Hak",
-        "berkas_masuk": 54.0,
-        "selesai_spopp": 54.0,
-        "aktif_spopp": 0.0,
-        "aktif_melebihi_spopp": 0.0,
-        "luncuran_bulan_sebelumnya": 0.0,
-        "kinerja_pct": 100.0
-      },
-      {
-        "no": "3",
-        "jenis": "Perubahan Hak",
-        "berkas_masuk": 63.0,
-        "selesai_spopp": 63.0,
-        "aktif_spopp": 0.0,
-        "aktif_melebihi_spopp": 0.0,
-        "luncuran_bulan_sebelumnya": 0.0,
-        "kinerja_pct": 100.0
-      },
-      {
-        "no": "4",
-        "jenis": "Roya",
-        "berkas_masuk": 4.0,
-        "selesai_spopp": 4.0,
-        "aktif_spopp": 0.0,
-        "aktif_melebihi_spopp": 0.0,
-        "luncuran_bulan_sebelumnya": 0.0,
-        "kinerja_pct": 100.0
-      },
-      {
-        "no": "5",
-        "jenis": "Pengecekan Elektronik",
-        "berkas_masuk": 147.0,
-        "selesai_spopp": 147.0,
-        "aktif_spopp": 0.0,
-        "aktif_melebihi_spopp": 0.0,
-        "luncuran_bulan_sebelumnya": 0.0,
-        "kinerja_pct": 100.0
-      },
-      {
-        "no": "6",
-        "jenis": "SKPT Elektronik",
-        "berkas_masuk": 16.0,
-        "selesai_spopp": 16.0,
-        "aktif_spopp": 0.0,
-        "aktif_melebihi_spopp": 0.0,
-        "luncuran_bulan_sebelumnya": 0.0,
-        "kinerja_pct": 100.0
-      },
-      {
-        "no": "7",
-        "jenis": "HT Elektronik",
-        "berkas_masuk": 19.0,
-        "selesai_spopp": 19.0,
-        "aktif_spopp": 0.0,
-        "aktif_melebihi_spopp": 0.0,
-        "luncuran_bulan_sebelumnya": 0.0,
-        "kinerja_pct": 100.0
-      }
-    ],
-    "total": {
-      "berkas_masuk": 310.0,
-      "selesai_spopp": 310.0,
-      "aktif_spopp": 0.0,
-      "aktif_melebihi_spopp": 0.0,
-      "luncuran_bulan_sebelumnya": 0.0,
-      "kinerja_pct": 100.0
-    },
-    "peringkat": {
-      "nasional": {
-        "jumlah_berkas": 12.0,
-        "kinerja_pct": 100.0,
-        "posisi": 12.0
-      },
-      "provinsi": {
-        "jumlah_berkas": 3.0,
-        "kinerja_pct": 100.0,
-        "posisi": 3.0
-      }
-    }
-  },
-  "ppat_ppats": {
-    "status": "ok",
-    "ppat": {
-      "terdaftar_mitra": 60.0,
-      "aktif_tanpa_produk": 7.0,
-      "tidak_aktif": 1.0,
-      "teguran": 3.0
-    },
-    "ppats": {
-      "terdaftar_mitra": 24.0,
-      "aktif_tanpa_produk": 0.0,
-      "tidak_aktif": 0.0,
-      "teguran": 1.0
-    },
-    "jumlah_total": {
-      "terdaftar_mitra": 84.0,
-      "aktif_tanpa_produk": 7.0,
-      "tidak_aktif": 1.0,
-      "teguran": 4.0
-    },
-    "produk": [
-      {
-        "jenis_akta": "Akta Jual Beli",
-        "dibuat": 37.0,
-        "sudah_terdaftar": 1.0,
-        "belum_terdaftar": 36.0
-      },
-      {
-        "jenis_akta": "Akta Tukar Menukar",
-        "dibuat": 0,
-        "sudah_terdaftar": 0,
-        "belum_terdaftar": 0
-      },
-      {
-        "jenis_akta": "Akta Hibah",
-        "dibuat": 4.0,
-        "sudah_terdaftar": 1.0,
-        "belum_terdaftar": 3.0
-      },
-      {
-        "jenis_akta": "Akta Pemasukan Modal Ke Dalam Perusahaan",
-        "dibuat": 0,
-        "sudah_terdaftar": 0,
-        "belum_terdaftar": 0
-      },
-      {
-        "jenis_akta": "Akta Pembagian Hak Bersama",
-        "dibuat": 0,
-        "sudah_terdaftar": 0,
-        "belum_terdaftar": 0
-      },
-      {
-        "jenis_akta": "Akta Pemberian Hak Tanggungan",
-        "dibuat": 3.0,
-        "sudah_terdaftar": 2.0,
-        "belum_terdaftar": 1.0
-      },
-      {
-        "jenis_akta": "Akta Pemberian HGB/HP",
-        "dibuat": 0,
-        "sudah_terdaftar": 0,
-        "belum_terdaftar": 0
-      },
-      {
-        "jenis_akta": "Surat Kuasa Memberikan Hak Tanggungan",
-        "dibuat": 0,
-        "sudah_terdaftar": 0,
-        "belum_terdaftar": 0
-      }
-    ],
-    "produk_total": {
-      "dibuat": 44.0,
-      "sudah_terdaftar": 4.0,
-      "belum_terdaftar": 40.0
-    },
-    "pelaporan": {
-      "tercepat": {
-        "nama_ppat": "Hasruri., S.H., M.Kn",
-        "tanggal_akta": "04/09/2026",
-        "tanggal_pelaporan": "04/09/2026",
-        "jumlah_akta": 1.0,
-        "keterangan": "Selesai & dilaporkan di hari yang sama (H+0)"
-      },
-      "terlambat": {
-        "nama_ppat": "Burhanudin., S.H.,M.Kn",
-        "tanggal_akta": "26/06/2026",
-        "tanggal_pelaporan": "03/09/2026",
-        "jumlah_akta": 1.0,
-        "keterangan": "Dilaporkan H+69 hari"
-      }
-    }
-  }
-};</script>
+<script>window.__PAPARAN_SEED__ = {"generated_at":"2026-09-10","layanan_harian":{"label":"Layanan Harian — Seksi Penetapan Hak dan Pendaftaran (Berkas Aktif — Berkas Ditutup dihitung terpisah)","total":383,"selesai":22,"selesai_manual":null,"selesai_efektif":22,"target":null,"pct_capaian":null,"basis_selesai":"sipelta","data_tidak_konsisten":0,"diserahkan":0,"dalam_proses":189,"overdue":142,"akan_jatuh_tempo":30,"dalam_proses_per_tahun":[["2025",6],["2026",183]],"akan_jatuh_tempo_per_tahun":[["2026",30]],"overdue_per_tahun":[["2025",2],["2026",140]],"dalam_proses_per_kegiatan":[["Pendaftaran Tanah Pertama Kali Pemberian Hak",74],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",41],["Hapusnya Hak",26],["Permohonan SK Pemberian Hak Milik Perorangan",15],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",13],["Pemisahan Bidang",6],["Sertipikat Pengganti Karena Hilang",5],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",4],["Permohonan SK Perpanjangan Hak Guna Bangunan Perorangan",2],["Penggabungan Bidang",1],["Pemecahan Bidang",1],["Pendaftaran SK Perpanjangan/Pembaruan Hak",1]],"akan_jatuh_tempo_per_kegiatan":[["Pemisahan Bidang",9],["Penggabungan Bidang",8],["Hapusnya Hak",4],["Sertipikat Pengganti Karena Hilang",4],["Surat Keterangan Pendaftaran Tanah",2],["Ganti Nama Pemegang Hak Tanggungan",1],["Pemecahan Bidang",1],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",1]],"overdue_per_kegiatan":[["Pemisahan Bidang",49],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",24],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",23],["Pemecahan Bidang",17],["Penggabungan Bidang",12],["Pelantikan PPAT Sementara",5],["Sertipikat Pengganti Karena Hilang",3],["Permohonan SK Pemberian Hak Milik Perorangan",2],["Pendaftaran Tanah Pertama Kali Pemberian Hak",2],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",2],["Izin Peralihan Hak Pakai/Hak Milik",1],["Permohonan SK Perpanjangan Hak Pakai Badan Hukum",1],["Permohonan SK Pemberian Hak Pakai Instansi/Badan Usaha Pemerintah",1]],"dalam_proses_per_tahun_kegiatan":[["2025",[["Pendaftaran Tanah Pertama Kali Pemberian Hak",5],["Pendaftaran SK Perpanjangan/Pembaruan Hak",1]]],["2026",[["Pendaftaran Tanah Pertama Kali Pemberian Hak",69],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",41],["Hapusnya Hak",26],["Permohonan SK Pemberian Hak Milik Perorangan",15],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",13],["Pemisahan Bidang",6],["Sertipikat Pengganti Karena Hilang",5],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",4],["Permohonan SK Perpanjangan Hak Guna Bangunan Perorangan",2],["Penggabungan Bidang",1],["Pemecahan Bidang",1]]]],"akan_jatuh_tempo_per_tahun_kegiatan":[["2026",[["Pemisahan Bidang",9],["Penggabungan Bidang",8],["Hapusnya Hak",4],["Sertipikat Pengganti Karena Hilang",4],["Surat Keterangan Pendaftaran Tanah",2],["Ganti Nama Pemegang Hak Tanggungan",1],["Pemecahan Bidang",1],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",1]]]],"overdue_per_tahun_kegiatan":[["2025",[["Permohonan SK Perpanjangan Hak Pakai Badan Hukum",1],["Pendaftaran Tanah Pertama Kali Pemberian Hak",1]]],["2026",[["Pemisahan Bidang",49],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",24],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",23],["Pemecahan Bidang",17],["Penggabungan Bidang",12],["Pelantikan PPAT Sementara",5],["Sertipikat Pengganti Karena Hilang",3],["Permohonan SK Pemberian Hak Milik Perorangan",2],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",2],["Pendaftaran Tanah Pertama Kali Pemberian Hak",1],["Izin Peralihan Hak Pakai/Hak Milik",1],["Permohonan SK Pemberian Hak Pakai Instansi/Badan Usaha Pemerintah",1]]]],"per_kegiatan":[["Pendaftaran Tanah Pertama Kali Pemberian Hak",76],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",66],["Pemisahan Bidang",64],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",36],["Hapusnya Hak",30],["Penggabungan Bidang",21],["Pemecahan Bidang",19],["Permohonan SK Pemberian Hak Milik Perorangan",17],["Sertipikat Pengganti Karena Hilang",12],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",6],["Pelantikan PPAT Sementara",5],["Surat Keterangan Pendaftaran Tanah",2],["Permohonan SK Perpanjangan Hak Guna Bangunan Perorangan",2],["Ganti Nama Pemegang Hak Tanggungan",1],["Izin Peralihan Hak Pakai/Hak Milik",1],["Permohonan SK Perpanjangan Hak Pakai Badan Hukum",1],["Permohonan SK Pemberian Hak Pakai Instansi/Badan Usaha Pemerintah",1],["Pendaftaran SK Perpanjangan/Pembaruan Hak",1]],"per_posisi_aktif":[["Pelaksana Kelompok Substansi Pengukuran Dan Pemetan Kadastral",92],["Petugas Ukur",63],["Tim Panitia",45],["Ketua Panitia/Ketua Peneliti Tanah",38],["Kepala Kantor Pertanahan",37],["Pelaksana Kelompok Substansi Pendaftaran Tanah dan Ruang, Tanah Komunal dan Hubungan Kelembagaan",23],["Petugas Kontrol Pengumuman",23],["Petugas Pemetaan",16],["Pelaksana Kelompok Substansi Pemeliharaan Data Hak Tanah dan Pembinaan PPAT",11],["Kepala Seksi Penetapan Hak dan Pendaftaran",8],["Kepala Seksi Survei dan Pemetaan",3],["Pelaksana Kelompok Substansi Penetapan Hak Tanah dan Ruang",1],["Loket Pembayaran",1]],"per_posisi_overdue":[["Pelaksana Kelompok Substansi Pengukuran Dan Pemetan Kadastral",56],["Petugas Ukur",37],["Petugas Pemetaan",13],["Pelaksana Kelompok Substansi Pemeliharaan Data Hak Tanah dan Pembinaan PPAT",8],["Ketua Panitia/Ketua Peneliti Tanah",8],["Kepala Kantor Pertanahan",6],["Tim Panitia",5],["Petugas Kontrol Pengumuman",4],["Kepala Seksi Survei dan Pemetaan",3],["Pelaksana Kelompok Substansi Pendaftaran Tanah dan Ruang, Tanah Komunal dan Hubungan Kelembagaan",1]]},"survei_pemetaan_crossmetric":{"label":"Layanan Seksi Penetapan Hak dan Pendaftaran — Posisi Terakhir di Seksi Survei dan Pemetaan","total":174,"selesai":0,"selesai_manual":null,"selesai_efektif":0,"target":null,"pct_capaian":null,"basis_selesai":"sipelta","data_tidak_konsisten":0,"diserahkan":0,"dalam_proses":47,"overdue":109,"akan_jatuh_tempo":18,"dalam_proses_per_tahun":[["2025",4],["2026",43]],"akan_jatuh_tempo_per_tahun":[["2026",18]],"overdue_per_tahun":[["2026",109]],"dalam_proses_per_kegiatan":[["Pendaftaran Tanah Pertama Kali Pemberian Hak",20],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",13],["Pemisahan Bidang",6],["Permohonan SK Pemberian Hak Milik Perorangan",2],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",2],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",2],["Penggabungan Bidang",1],["Pemecahan Bidang",1]],"akan_jatuh_tempo_per_kegiatan":[["Pemisahan Bidang",9],["Penggabungan Bidang",8],["Pemecahan Bidang",1]],"overdue_per_kegiatan":[["Pemisahan Bidang",48],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",23],["Pemecahan Bidang",17],["Penggabungan Bidang",10],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",10],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",1]],"dalam_proses_per_tahun_kegiatan":[["2025",[["Pendaftaran Tanah Pertama Kali Pemberian Hak",4]]],["2026",[["Pendaftaran Tanah Pertama Kali Pemberian Hak",16],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",13],["Pemisahan Bidang",6],["Permohonan SK Pemberian Hak Milik Perorangan",2],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",2],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",2],["Penggabungan Bidang",1],["Pemecahan Bidang",1]]]],"akan_jatuh_tempo_per_tahun_kegiatan":[["2026",[["Pemisahan Bidang",9],["Penggabungan Bidang",8],["Pemecahan Bidang",1]]]],"overdue_per_tahun_kegiatan":[["2026",[["Pemisahan Bidang",48],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",23],["Pemecahan Bidang",17],["Penggabungan Bidang",10],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",10],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",1]]]],"per_kegiatan":[["Pemisahan Bidang",63],["Pendaftaran Tanah Pertama Kali Penegasan Tanah Wakaf",36],["Pendaftaran Tanah Pertama Kali Pemberian Hak",20],["Penggabungan Bidang",19],["Pemecahan Bidang",19],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",12],["Permohonan SK Pemberian Hak Guna Bangunan Badan Hukum",3],["Permohonan SK Pemberian Hak Milik Perorangan",2]],"per_posisi_aktif":[["Pelaksana Kelompok Substansi Pengukuran Dan Pemetan Kadastral",92],["Petugas Ukur",63],["Petugas Pemetaan",16],["Kepala Seksi Survei dan Pemetaan",3]],"per_posisi_overdue":[["Pelaksana Kelompok Substansi Pengukuran Dan Pemetan Kadastral",56],["Petugas Ukur",37],["Petugas Pemetaan",13],["Kepala Seksi Survei dan Pemetaan",3]]},"wakaf":{"target":300.0,"pemberkasan":42.0,"terdaftar":60.0,"pengukuran":36,"pbt":24.0,"panitia":0,"sk_hak":24.0,"sertel":24.0,"pct_pemberkasan":14.0,"pct_terdaftar":20.0,"pct_pengukuran":12.0,"pct_pbt":8.0,"pct_panitia":0.0,"pct_sk_hak":8.0,"pct_sertel":8.0,"auto":true,"label":"Progres Sertipikasi Tanah Wakaf","ditutup":1},"bmn":{"target":2.0,"pemberkasan":2.0,"terdaftar":2.0,"pengukuran":0,"pbt":2.0,"panitia":0,"sk_hak":2.0,"sertel":2.0,"pct_pemberkasan":100.0,"pct_terdaftar":100.0,"pct_pengukuran":0.0,"pct_pbt":100.0,"pct_panitia":0.0,"pct_sk_hak":100.0,"pct_sertel":100.0,"auto":true,"label":"Sertipikasi Aset BMN","ditutup":0},"bmn_rutin":{"target":null,"pemberkasan":null,"terdaftar":0,"pengukuran":0,"pbt":null,"panitia":0,"sk_hak":null,"sertel":null,"pct_pemberkasan":null,"pct_terdaftar":null,"pct_pengukuran":null,"pct_pbt":null,"pct_panitia":null,"pct_sk_hak":null,"pct_sertel":null,"auto":true,"label":"Sertipikasi Aset BMN (Rutin)","ditutup":0},"bmd_pemprov":{"target":null,"pemberkasan":null,"terdaftar":0,"pengukuran":0,"pbt":null,"panitia":0,"sk_hak":null,"sertel":null,"pct_pemberkasan":null,"pct_terdaftar":null,"pct_pengukuran":null,"pct_pbt":null,"pct_panitia":null,"pct_sk_hak":null,"pct_sertel":null,"auto":true,"label":"Sertipikasi Aset BMD Pemprov Banten","ditutup":0},"bmd_pemkab":{"target":70.0,"pemberkasan":212.0,"terdaftar":201.0,"pengukuran":20,"pbt":163.0,"panitia":37,"sk_hak":1.0,"sertel":125.0,"pct_pemberkasan":302.86,"pct_terdaftar":287.14,"pct_pengukuran":28.57,"pct_pbt":232.86,"pct_panitia":52.86,"pct_sk_hak":1.43,"pct_sertel":178.57,"auto":true,"label":"Sertipikasi Aset BMD Pemkab Lebak","ditutup":1},"tkd":{"target":null,"pemberkasan":null,"terdaftar":0,"pengukuran":0,"pbt":null,"panitia":0,"sk_hak":null,"sertel":null,"pct_pemberkasan":null,"pct_terdaftar":null,"pct_pengukuran":null,"pct_pbt":null,"pct_panitia":null,"pct_sk_hak":null,"pct_sertel":null,"auto":true,"label":"Sertipikasi Aset Tanah Kas Desa (TKD)","ditutup":0},"berkas_ditutup":{"total":953,"pnbp":414114189,"per_kegiatan":[["Peralihan Hak - Jual Beli",189],["Pemisahan Bidang",132],["Pendaftaran Tanah Pertama Kali Pengakuan/Penegasan Hak",85],["Penggabungan Bidang",54],["Pendaftaran SK Hak",46],["Permohonan SK Pemberian Hak Milik Perorangan",44],["Perubahan Hak Atas Tanah",41],["Blokir",35],["Sertipikat Pengganti Karena Hilang",32],["Pencatatan Perubahan Penggunaan Tanah",32]]},"ptsl":{"shat":{"per_lokasi":[{"no":"1","kecamatan":"PANGGARANGAN","desa":"JATAKE","target_shat_sumber":0.0,"puldadis":307.0,"pemberkasan":306.0,"potensi_k1":10.0,"k1":255.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":169.0,"diserahkan":0.0,"k1_pbt_sebelumnya":255.0,"pct_k1_dari_puldadis":83.06,"pct_diserahkan_dari_puldadis":0.0},{"no":"2","kecamatan":"PANGGARANGAN","desa":"SOGONG","target_shat_sumber":0.0,"puldadis":928.0,"pemberkasan":928.0,"potensi_k1":152.0,"k1":554.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":151.0,"diserahkan":0.0,"k1_pbt_sebelumnya":554.0,"pct_k1_dari_puldadis":59.7,"pct_diserahkan_dari_puldadis":0.0},{"no":"3","kecamatan":"PANGGARANGAN","desa":"CIBARENGKOK","target_shat_sumber":0.0,"puldadis":246.0,"pemberkasan":246.0,"potensi_k1":0.0,"k1":246.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":216.0,"diserahkan":216.0,"k1_pbt_sebelumnya":246.0,"pct_k1_dari_puldadis":100.0,"pct_diserahkan_dari_puldadis":87.8},{"no":"4","kecamatan":"PANGGARANGAN","desa":"SUKAJADI","target_shat_sumber":0.0,"puldadis":126.0,"pemberkasan":126.0,"potensi_k1":58.0,"k1":0.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":0.0,"diserahkan":0.0,"k1_pbt_sebelumnya":0.0,"pct_k1_dari_puldadis":0.0,"pct_diserahkan_dari_puldadis":0.0},{"no":"5","kecamatan":"PANGGARANGAN","desa":"GUNUNGGEDE","target_shat_sumber":0.0,"puldadis":653.0,"pemberkasan":653.0,"potensi_k1":13.0,"k1":208.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":99.0,"diserahkan":99.0,"k1_pbt_sebelumnya":208.0,"pct_k1_dari_puldadis":31.85,"pct_diserahkan_dari_puldadis":15.16},{"no":"6","kecamatan":"MAJA","desa":"PASIRKACAPI","target_shat_sumber":0.0,"puldadis":453.0,"pemberkasan":453.0,"potensi_k1":1.0,"k1":452.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":398.0,"diserahkan":398.0,"k1_pbt_sebelumnya":452.0,"pct_k1_dari_puldadis":99.78,"pct_diserahkan_dari_puldadis":87.86},{"no":"7","kecamatan":"MAJA","desa":"GUBUGAN CIBEUREUM","target_shat_sumber":0.0,"puldadis":612.0,"pemberkasan":612.0,"potensi_k1":0.0,"k1":0.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":0.0,"diserahkan":0.0,"k1_pbt_sebelumnya":0.0,"pct_k1_dari_puldadis":0.0,"pct_diserahkan_dari_puldadis":0.0},{"no":"8","kecamatan":"MAJA","desa":"BINONG","target_shat_sumber":0.0,"puldadis":497.0,"pemberkasan":497.0,"potensi_k1":39.0,"k1":440.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":310.0,"diserahkan":220.0,"k1_pbt_sebelumnya":440.0,"pct_k1_dari_puldadis":88.53,"pct_diserahkan_dari_puldadis":44.27},{"no":"9","kecamatan":"MAJA","desa":"SANGIANG","target_shat_sumber":0.0,"puldadis":580.0,"pemberkasan":580.0,"potensi_k1":86.0,"k1":197.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":197.0,"diserahkan":0.0,"k1_pbt_sebelumnya":197.0,"pct_k1_dari_puldadis":33.97,"pct_diserahkan_dari_puldadis":0.0},{"no":"10","kecamatan":"MAJA","desa":"BUYUT MEKAR","target_shat_sumber":0.0,"puldadis":80.0,"pemberkasan":80.0,"potensi_k1":0.0,"k1":69.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":0.0,"diserahkan":0.0,"k1_pbt_sebelumnya":69.0,"pct_k1_dari_puldadis":86.25,"pct_diserahkan_dari_puldadis":0.0},{"no":"11","kecamatan":"CURUGBITUNG","desa":"CILAYANG","target_shat_sumber":0.0,"puldadis":132.0,"pemberkasan":132.0,"potensi_k1":48.0,"k1":0.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":0.0,"diserahkan":0.0,"k1_pbt_sebelumnya":0.0,"pct_k1_dari_puldadis":0.0,"pct_diserahkan_dari_puldadis":0.0},{"no":"12","kecamatan":"CURUGBITUNG","desa":"CIPINING","target_shat_sumber":0.0,"puldadis":273.0,"pemberkasan":273.0,"potensi_k1":148.0,"k1":13.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":13.0,"diserahkan":13.0,"k1_pbt_sebelumnya":13.0,"pct_k1_dari_puldadis":4.76,"pct_diserahkan_dari_puldadis":4.76},{"no":"13","kecamatan":"CIHARA","desa":"MEKARSARI","target_shat_sumber":0.0,"puldadis":174.0,"pemberkasan":174.0,"potensi_k1":0.0,"k1":174.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":174.0,"diserahkan":174.0,"k1_pbt_sebelumnya":174.0,"pct_k1_dari_puldadis":100.0,"pct_diserahkan_dari_puldadis":100.0},{"no":"14","kecamatan":"CIHARA","desa":"CIPARAHU","target_shat_sumber":0.0,"puldadis":515.0,"pemberkasan":515.0,"potensi_k1":25.0,"k1":490.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":369.0,"diserahkan":368.0,"k1_pbt_sebelumnya":490.0,"pct_k1_dari_puldadis":95.15,"pct_diserahkan_dari_puldadis":71.46},{"no":"15","kecamatan":"CIHARA","desa":"KARANGKAMULYAN","target_shat_sumber":0.0,"puldadis":600.0,"pemberkasan":600.0,"potensi_k1":17.0,"k1":583.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":561.0,"diserahkan":561.0,"k1_pbt_sebelumnya":583.0,"pct_k1_dari_puldadis":97.17,"pct_diserahkan_dari_puldadis":93.5},{"no":"16","kecamatan":"CIHARA","desa":"BARUNAI","target_shat_sumber":0.0,"puldadis":401.0,"pemberkasan":401.0,"potensi_k1":221.0,"k1":67.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":0.0,"diserahkan":0.0,"k1_pbt_sebelumnya":67.0,"pct_k1_dari_puldadis":16.71,"pct_diserahkan_dari_puldadis":0.0},{"no":"17","kecamatan":"CIHARA","desa":"CITEUPUSEN","target_shat_sumber":0.0,"puldadis":724.0,"pemberkasan":724.0,"potensi_k1":0.0,"k1":724.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":700.0,"diserahkan":700.0,"k1_pbt_sebelumnya":724.0,"pct_k1_dari_puldadis":100.0,"pct_diserahkan_dari_puldadis":96.69},{"no":"18","kecamatan":"CIGEMBLONG","desa":"PEUCANGPARI","target_shat_sumber":0.0,"puldadis":60.0,"pemberkasan":60.0,"potensi_k1":60.0,"k1":0.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":0.0,"diserahkan":0.0,"k1_pbt_sebelumnya":0.0,"pct_k1_dari_puldadis":0.0,"pct_diserahkan_dari_puldadis":0.0},{"no":"19","kecamatan":"BOJONGMANIK","desa":"KADURAHAYU","target_shat_sumber":0.0,"puldadis":189.0,"pemberkasan":189.0,"potensi_k1":0.0,"k1":0.0,"k2":0.0,"k3_1":0.0,"k3_2":0.0,"siap_diserahkan":0.0,"diserahkan":0.0,"k1_pbt_sebelumnya":0.0,"pct_k1_dari_puldadis":0.0,"pct_diserahkan_dari_puldadis":0.0}],"summary":{"target_shat":8000,"jumlah_kecamatan":6,"jumlah_desa":19,"puldadis":7550.0,"pemberkasan":7549.0,"potensi_k1":878.0,"k1":4472.0,"siap_diserahkan":3357.0,"diserahkan":2749.0,"k1_pbt_sebelumnya":4472.0,"pct_pemberkasan_dari_target":94.36,"pct_k1_dari_target":55.9,"pct_diserahkan_dari_target":34.36,"residu_2026":1723.0,"residu_lama":2859.0,"residu_per_tahun":[["2018",2666.0],["2019",47.0],["2020",0.0],["2021",0.0],["2022",47.0],["2023",95.0],["2024",4.0],["2025",0.0],["2026",0.0]],"residu_total":4582.0,"k1_pbt_sebelumnya_legacy":4472.0},"tahapan_k1":[{"wilayah":"Desa Sangiang Kec. Maja","potensi_k1":86.0,"pengumuman":86.0,"pengesahan":0.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Binong Kec. Maja","potensi_k1":39.0,"pengumuman":0.0,"pengesahan":36.0,"sk":0.0,"proses_sertipikat":3.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Pasirkacapi Kec. Maja","potensi_k1":1.0,"pengumuman":0.0,"pengesahan":1.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Jatake Kec. Panggarangan","potensi_k1":10.0,"pengumuman":0.0,"pengesahan":10.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Sogong Kec. Panggarangan","potensi_k1":152.0,"pengumuman":0.0,"pengesahan":145.0,"sk":0.0,"proses_sertipikat":7.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Gununggede Kec. Panggarangan","potensi_k1":13.0,"pengumuman":0.0,"pengesahan":13.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Sukajadi Kec. Panggarangan","potensi_k1":58.0,"pengumuman":0.0,"pengesahan":58.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Cipining Kec. Curugbitung","potensi_k1":148.0,"pengumuman":48.0,"pengesahan":52.0,"sk":0.0,"proses_sertipikat":48.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Cilayang Kec. Curugbitung","potensi_k1":48.0,"pengumuman":0.0,"pengesahan":48.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Karangkamulyan Kec. Cihara","potensi_k1":17.0,"pengumuman":17.0,"pengesahan":0.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Barunai Kec. Cihara","potensi_k1":221.0,"pengumuman":221.0,"pengesahan":0.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Ciparahu Kec. Cihara","potensi_k1":25.0,"pengumuman":0.0,"pengesahan":25.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0},{"wilayah":"Desa Peucangpari Kec. Cigemblong","potensi_k1":60.0,"pengumuman":0.0,"pengesahan":60.0,"sk":0.0,"proses_sertipikat":0.0,"di208":0.0,"unggah_bt":0.0}],"tahapan_k1_total":{"wilayah":"TOTAL","potensi_k1":878.0,"pengumuman":372.0,"pengesahan":448.0,"sk":0.0,"proses_sertipikat":58.0,"di208":0.0,"unggah_bt":0.0}}},"layanan_prioritas":{"status":"ok","items":[{"no":"No.","jenis":"Jenis Layanan","berkas_masuk":0.0,"selesai_spopp":0.0,"aktif_spopp":0.0,"aktif_melebihi_spopp":0.0,"luncuran_bulan_sebelumnya":0.0,"kinerja_pct":0.0},{"no":"1","jenis":"Pendaftaran SK","berkas_masuk":11.0,"selesai_spopp":11.0,"aktif_spopp":0.0,"aktif_melebihi_spopp":0.0,"luncuran_bulan_sebelumnya":0.0,"kinerja_pct":100.0},{"no":"2","jenis":"Peralihan Hak","berkas_masuk":68.0,"selesai_spopp":68.0,"aktif_spopp":0.0,"aktif_melebihi_spopp":0.0,"luncuran_bulan_sebelumnya":0.0,"kinerja_pct":100.0},{"no":"3","jenis":"Perubahan Hak","berkas_masuk":71.0,"selesai_spopp":71.0,"aktif_spopp":0.0,"aktif_melebihi_spopp":0.0,"luncuran_bulan_sebelumnya":0.0,"kinerja_pct":100.0},{"no":"4","jenis":"Roya","berkas_masuk":4.0,"selesai_spopp":4.0,"aktif_spopp":0.0,"aktif_melebihi_spopp":0.0,"luncuran_bulan_sebelumnya":0.0,"kinerja_pct":100.0},{"no":"5","jenis":"Pengecekan Elektronik","berkas_masuk":175.0,"selesai_spopp":175.0,"aktif_spopp":0.0,"aktif_melebihi_spopp":0.0,"luncuran_bulan_sebelumnya":0.0,"kinerja_pct":100.0},{"no":"6","jenis":"SKPT Elektronik","berkas_masuk":18.0,"selesai_spopp":18.0,"aktif_spopp":0.0,"aktif_melebihi_spopp":0.0,"luncuran_bulan_sebelumnya":0.0,"kinerja_pct":100.0},{"no":"7","jenis":"HT Elektronik","berkas_masuk":22.0,"selesai_spopp":22.0,"aktif_spopp":0.0,"aktif_melebihi_spopp":0.0,"luncuran_bulan_sebelumnya":0.0,"kinerja_pct":100.0}],"total":{"berkas_masuk":369.0,"selesai_spopp":369.0,"aktif_spopp":0.0,"aktif_melebihi_spopp":0.0,"luncuran_bulan_sebelumnya":0.0,"kinerja_pct":100.0},"peringkat":{"nasional":{"jumlah_berkas":12.0,"kinerja_pct":100.0,"posisi":12.0},"provinsi":{"jumlah_berkas":3.0,"kinerja_pct":100.0,"posisi":3.0}}},"ppat_ppats":{"status":"ok","ppat":{"terdaftar_mitra":60.0,"aktif_tanpa_produk":7.0,"tidak_aktif":1.0,"teguran":3.0},"ppats":{"terdaftar_mitra":24.0,"aktif_tanpa_produk":0.0,"tidak_aktif":0.0,"teguran":1.0},"jumlah_total":{"terdaftar_mitra":84.0,"aktif_tanpa_produk":7.0,"tidak_aktif":1.0,"teguran":4.0},"produk":[{"jenis_akta":"Akta Jual Beli","dibuat":58.0,"sudah_terdaftar":16.0,"belum_terdaftar":42.0},{"jenis_akta":"Akta Tukar Menukar","dibuat":0,"sudah_terdaftar":0,"belum_terdaftar":0},{"jenis_akta":"Akta Hibah","dibuat":4.0,"sudah_terdaftar":1.0,"belum_terdaftar":3.0},{"jenis_akta":"Akta Pemasukan Modal Ke Dalam Perusahaan","dibuat":0,"sudah_terdaftar":0,"belum_terdaftar":0},{"jenis_akta":"Akta Pembagian Hak Bersama","dibuat":0,"sudah_terdaftar":0,"belum_terdaftar":0},{"jenis_akta":"Akta Pemberian Hak Tanggungan","dibuat":6.0,"sudah_terdaftar":4.0,"belum_terdaftar":2.0},{"jenis_akta":"Akta Pemberian HGB/HP","dibuat":0,"sudah_terdaftar":0,"belum_terdaftar":0},{"jenis_akta":"Surat Kuasa Memberikan Hak Tanggungan","dibuat":0,"sudah_terdaftar":0,"belum_terdaftar":0}],"produk_total":{"dibuat":68.0,"sudah_terdaftar":21.0,"belum_terdaftar":47.0},"pelaporan":{"tercepat":{"nama_ppat":"Hasruri., S.H., M.Kn","tanggal_akta":"04/09/2026","tanggal_pelaporan":"04/09/2026","jumlah_akta":1.0,"keterangan":"Selesai & dilaporkan di hari yang sama (H+0)"},"terlambat":{"nama_ppat":"Burhanudin., S.H.,M.Kn","tanggal_akta":"26/06/2026","tanggal_pelaporan":"03/09/2026","jumlah_akta":1.0,"keterangan":"Dilaporkan H+69 hari"}}}};</script>
 <script>
 /* ============================================================
    PAPARAN MINGGUAN — dashboard client-side penuh.
@@ -2188,13 +642,8 @@ function samaTeksPaparan(a, b) { return normTeksPaparan(a) === normTeksPaparan(b
 function selesaiSipelta(r) {
   // Return [isSelesai, dataTidakKonsisten] — lihat docstring _selesai_sipelta()
   // di compute_stats.py utk penjelasan lengkap tiap cabang.
-  const keterangan = r.KETERANGAN;
   const posisi = (r.Posisi_Terakhir || '').trim();
-  if (samaTeksPaparan(keterangan, 'Diserahkan')) {
-    if (samaTeksPaparan(posisi, POSISI_LOKET_PENYERAHAN)) return [true, false];
-    return [false, true];
-  }
-  if (parseDateID(r.Tanggal_Diserahkan)) return [true, false];
+  if (samaTeksPaparan(posisi, POSISI_LOKET_PENYERAHAN)) return [true, false];
   return [false, false];
 }
 function hitungKategori(subset, label, basisSelesai, manual) {
@@ -2239,8 +688,8 @@ function hitungKategori(subset, label, basisSelesai, manual) {
     if (diserahkanD) diserahkan++;
     const tahun = r.Tahun || '-';
     const keg = r.Nama_Kegiatan || '-';
-    perKegiatan[keg] = (perKegiatan[keg] || 0) + 1;
     if (selesaiFlag) return;
+    perKegiatan[keg] = (perKegiatan[keg] || 0) + 1;
     // v9.10 — Poin C (permintaan user, "eksklusif — 3 kotak terpisah"): Dalam
     // Proses/Akan Jatuh Tempo/Jatuh Tempo SEKARANG SALING EKSKLUSIF (klasifikasi
     // Jatuh_Tempo dicek DULU, baru TEPAT SATU counter naik) — bukan lagi
@@ -2626,7 +1075,23 @@ const TARGET_SHAT_RESMI = 8000;
 function prosesSHAT(text) {
   const rows = parseCSV(text);
   const perLokasi = [];
-  for (let i = 1; i < rows.length; i++) {
+  // v9.19 - BUG NYATA: export asli Google Sheets ternyata punya 1 baris
+  // JUDUL ("PROGRES K1 SHAT PTSL,,,...") SEBELUM baris header kolom
+  // ("No.,Kecamatan,Desa/Kelurahan,..."). Kode lama asumsi rows[0] SUDAH
+  // header (mulai baca dari i=1) - akibatnya i=1 malah baris header itu
+  // sendiri, r[0]='No.' bukan digit -> `break` di iterasi pertama ->
+  // perLokasi KOSONG TOTAL (0 kecamatan/0 desa, semua 0%). Diperbaiki: cari
+  // baris header-nya dinamis (r[0]=='No.' dan r[1]=='Kecamatan'), baru mulai
+  // baca PERSIS setelah baris itu - tahan terhadap baris judul tambahan di
+  // atasnya (atau tanpa baris judul, tetap bekerja: headerIdx ketemu di 0).
+  let headerIdx = -1;
+  for (let i = 0; i < rows.length; i++) {
+    const r0 = (rows[i][0] || '').trim().toLowerCase();
+    const r1 = (rows[i][1] || '').trim().toLowerCase();
+    if (r0 === 'no.' && r1 === 'kecamatan') { headerIdx = i; break; }
+  }
+  const mulai = headerIdx >= 0 ? headerIdx + 1 : 1;
+  for (let i = mulai; i < rows.length; i++) {
     const r = rows[i];
     if (!r[0] || !/^\d+$/.test(r[0].trim())) break;
     const puldadis = parseIdNumber(r[4]), k1 = parseIdNumber(r[7]), diserahkan = parseIdNumber(r[12]);
@@ -2669,11 +1134,27 @@ function prosesSHAT(text) {
   // baris TOTAL=0) walau tabel 1 (ringkasan atas) tetap benar, karena
   // deteksinya beda logika. Dicocokkan juga longgar terhadap 'no' saja.
   const norm = (v) => (v || '').toString().trim().toLowerCase();
+  // v9.19 - posisi kolom 'Tahun'/'Jumlah' TERNYATA tidak selalu di 0/1 (export
+  // asli punya kolom 'No.' di depannya, jadi 'Tahun' di kolom 1, 'Jumlah' di
+  // kolom 2) - dicari dinamis di seluruh kolom row, mirror compute_stats.py.
+  const cariKolomTahunJumlah = (r) => {
+    for (let i = 0; i < r.length - 1; i++) {
+      if (norm(r[i]) === 'tahun' && norm(r[i + 1]) === 'jumlah') return i;
+    }
+    return -1;
+  };
   for (const r of rows) {
     const c0 = norm(r[0]), c1 = norm(r[1]);
     if ((c0 === 'no.' || c0 === 'no') && c1 === 'wilayah') { inSection2 = true; continue; }
+    // v9.18 — BUG NYATA (mirror compute_stats.py): kalau tabel ke-3 "Tahun/
+    // Jumlah" (RESIDU) ada langsung di bawah tabel 2 dalam SATU file/tab yang
+    // sama, inSection2 sebelumnya tidak pernah dimatikan — baris tahun
+    // 4-digit ("2018" dst) ikut lolos regex digit dan ke-scrape sbg baris
+    // desa palsu (kolom lain jadi 0/undefined, mengotori tahapan_k1 diam-diam
+    // tanpa error krn JS toleran terhadap index di luar jangkauan array).
+    if (cariKolomTahunJumlah(r) >= 0) { inSection2 = false; continue; }
     if (inSection2) {
-      if (!r[0] || !/^\d+$/.test(r[0].trim())) continue;
+      if (!r[0] || !/^\d+$/.test(r[0].trim()) || r.length < 9) continue;
       const potensiK1 = parseIdNumber(r[2]), pengesahan = parseIdNumber(r[4]), prosesSert = parseIdNumber(r[6]);
       tahapan_k1.push({
         // v9.8 — Poin 7: 'Desa SANGIANG Kec. MAJA' -> 'Desa Sangiang Kec. Maja'.
@@ -2695,6 +1176,25 @@ function prosesSHAT(text) {
     di208: tahapan_k1.reduce((s, t) => s + t.di208, 0),
     unggah_bt: tahapan_k1.reduce((s, t) => s + t.unggah_bt, 0),
   };
+  const residuPerTahun = [];
+  let inResidu = false;
+  let tahunCol = 0;
+  for (const r of rows) {
+    if (!inResidu) {
+      const kolom = cariKolomTahunJumlah(r);
+      if (kolom >= 0) { tahunCol = kolom; inResidu = true; }
+      continue;
+    }
+    const tahunCell = (r[tahunCol] || '').trim();
+    if (!/^\d{4}$/.test(tahunCell)) { if (residuPerTahun.length) break; continue; }
+    residuPerTahun.push([tahunCell, parseIdNumber(r[tahunCol + 1])]);
+  }
+  if (residuPerTahun.length) {
+    const residuLama = residuPerTahun.filter(([t]) => t !== '2026').reduce((s, [, v]) => s + v, 0);
+    summary.residu_lama = residuLama;
+    summary.residu_total = summary.residu_2026 + residuLama;
+    summary.residu_per_tahun = residuPerTahun;
+  }
   return { per_lokasi: perLokasi, summary, tahapan_k1, tahapan_k1_total };
 }
 
@@ -2980,24 +1480,8 @@ function kegiatanListHTML(perTahunKegiatan, colorHex) {
 function renderLayananHarian() {
   const kat = DATA.layanan_harian;
   const el = document.getElementById('tab-layanan');
-  const spx = DATA.survei_pemetaan_crossmetric;
-  // v9.6 — Poin 3: kalimat per TAHUN (min. 2025 & 2026), dipersempit ke
-  // kegiatan Seksi Penetapan Hak dan Pendaftaran (lihat compute_stats.py).
-  const spTahunSet = new Set(['2025', '2026']);
-  [spx.dalam_proses_per_tahun, spx.akan_jatuh_tempo_per_tahun, spx.overdue_per_tahun].forEach(arr => (arr || []).forEach(x => spTahunSet.add(x[0])));
-  const spTahunList = Array.from(spTahunSet).sort();
-  const spTahunVal = (arr, tahun) => { const f = (arr || []).find(x => x[0] === tahun); return f ? f[1] : 0; };
-  const spSentencesHtml = spTahunList.map(tahun => {
-    const dp = spTahunVal(spx.dalam_proses_per_tahun, tahun);
-    const ajt = spTahunVal(spx.akan_jatuh_tempo_per_tahun, tahun);
-    const jt = spTahunVal(spx.overdue_per_tahun, tahun);
-    return `<div class="rounded-lg border px-4 py-3" style="background:#EAF6EC;border-color:#${ATR_GREEN}">
-      <div class="text-sm font-700" style="color:#${GREEN}">Layanan ${TARGET_SEKSI} Tahun ${tahun} yang belum dapat diproses karena posisi berkas masih berada pada Seksi Survei dan Pemetaan, terdiri dari Dalam Proses ${fmtNum(dp)} berkas, Akan Jatuh Tempo ${fmtNum(ajt)} berkas, Jatuh Tempo ${fmtNum(jt)} berkas.</div>
-    </div>`;
-  }).join('');
   el.innerHTML = `
     ${titleBoxHTML('Layanan Harian', TARGET_SEKSI)}
-    <p class="text-[11px] text-slate-400 italic">Dimurnikan ke ${TARGET_SEKSI} saja — hanya berkas yang JENIS KEGIATANnya masuk Seksi ini.</p>
     <div class="grid grid-cols-2 lg:grid-cols-2 gap-3">
       <div class="card"><div class="text-[10px] font-700 text-slate-400 uppercase">Total Aktif</div><div class="stat-num text-2xl mt-1" style="color:#${NAVY}">${fmtNum(kat.total)}</div></div>
       <div class="card"><div class="text-[10px] font-700 text-slate-400 uppercase">Selesai</div><div class="stat-num text-2xl mt-1" style="color:#${GREEN}">${fmtNum(kat.selesai)}</div></div>
@@ -3041,13 +1525,9 @@ function renderLayananHarian() {
         ${kegiatanListHTML(kat.overdue_per_tahun_kegiatan, RED)}
       </div>
     </div>
-    <h3 class="font-display font-700 text-xs text-slate-500 uppercase tracking-wide">${TARGET_SEKSI} — Menunggu Proses pada Seksi Survei dan Pemetaan</h3>
-    <div class="grid grid-cols-1 gap-2">
-      ${spSentencesHtml}
-    </div>
     <div class="grid lg:grid-cols-2 gap-4">
       <div class="card flex flex-col items-center">
-        <h3 class="font-display font-700 text-sm mb-1 self-start">Diagram Donat — Jenis Kegiatan</h3>
+        <h3 class="font-display font-700 text-sm mb-1 self-start">Diagram Jenis Kegiatan</h3>
         <div class="w-full max-w-[220px] aspect-square relative mt-2">
           <canvas id="layananDonutKegiatan"></canvas>
           <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
@@ -3058,7 +1538,7 @@ function renderLayananHarian() {
         <div id="layananDonutKegiatanLegend" class="mt-3 w-full max-h-40 overflow-y-auto"></div>
       </div>
       <div class="card flex flex-col items-center">
-        <h3 class="font-display font-700 text-sm mb-1 self-start">Diagram Donat — Posisi Terakhir <span class="font-400 text-slate-400">(dalam proses)</span></h3>
+        <h3 class="font-display font-700 text-sm mb-1 self-start">Diagram Posisi Terakhir <span class="font-400 text-slate-400">(dalam proses)</span></h3>
         <div class="w-full max-w-[220px] aspect-square relative mt-2">
           <canvas id="layananDonutPosisi"></canvas>
           <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
@@ -3080,7 +1560,46 @@ function renderLayananHarian() {
 // v9.1: funnel 8-tahap (lihat hitungProgresSertipikasi8()). Field manual (5,
 // SAMA utk SEMUA kategori): target, pemberkasan, pbt, sk_hak, sertel —
 // tersimpan di localStorage. Terdaftar/Pengukuran/Panitia SELALU otomatis.
-function saveDataLocal() { try { localStorage.setItem('paparan_mingguan_data_v4', JSON.stringify(DATA)); } catch (e) {} }
+// v9.19 — BUG NYATA ditemukan di lapangan (user Kantor Pertanahan Lebak):
+// dashboard ini dibuka dari file:// (bukan server), jadi live-fetch ke
+// Google Sheets SELALU gagal (diblokir CORS oleh browser untuk file lokal)
+// — ini NORMAL & disengaja, bukan bug. Tapi akibatnya: localStorage jadi
+// SATU-SATUNYA sumber data yang berhasil ("last known good"), dan skrip lama
+// TIDAK PERNAH membandingkannya dengan seed baru — begitu file index.html
+// diganti dengan versi baru (mis. hasil `python build_all.py` dgn CSV
+// terbaru & bug fix), browser tetap menampilkan cache localStorage LAMA
+// tanpa batas waktu (termasuk field yg sudah tidak valid lagi/NaN dari versi
+// lama), MENGALAHKAN seed baru yang sudah benar — user melihat data basi/
+// rusak walau file-nya sudah diperbaiki, sampai localStorage dibersihkan
+// manual lewat DevTools (butuh keahlian teknis, tidak realistis diminta ke
+// SEMUA staf Seksi PHP yg akan memakai dashboard ini). Diperbaiki dgn 2
+// lapis: (1) cache localStorage diberi cap tanggal saat disimpan; (2) saat
+// dimuat, cache HANYA dipakai kalau tanggalnya >= tanggal seed (window.
+// __PAPARAN_SEED__.generated_at) DAN datanya lolos validasi dasar (lihat
+// cacheMasihValid) — kalau tidak, seed baru yang menang. Jadi setiap kali
+// file index.html diganti dgn versi yg baru di-generate, data baru OTOMATIS
+// tampil di semua perangkat tanpa perlu localStorage.clear() manual lagi.
+function saveDataLocal() {
+  try {
+    localStorage.setItem('paparan_mingguan_data_v4', JSON.stringify(DATA));
+    localStorage.setItem('paparan_mingguan_data_v4_savedAt', new Date().toISOString().slice(0, 10));
+  } catch (e) {}
+}
+// Validasi dasar: data cache dianggap TIDAK valid (dibuang, jatuh balik ke
+// seed) kalau field inti yang seharusnya angka ternyata NaN/undefined —
+// ini pola khas cache dari versi lama yang punya bug parsing (mis. kasus
+// nyata: RESIDU PTSL tampil NaN krn cache dari versi sebelum v9.19).
+function cacheMasihValid(d) {
+  try {
+    const shatSm = d && d.ptsl && d.ptsl.shat && d.ptsl.shat.summary;
+    if (shatSm) {
+      for (const k of ['puldadis', 'k1', 'diserahkan', 'residu_2026', 'residu_lama', 'residu_total']) {
+        if (typeof shatSm[k] !== 'number' || Number.isNaN(shatSm[k])) return false;
+      }
+    }
+    return true;
+  } catch (e) { return false; }
+}
 // v9: recompute seluruh field turunan funnel 8-tahap (pct_pemberkasan/
 // pct_terdaftar/pct_pengukuran/pct_pbt/pct_panitia/pct_sk_hak/pct_sertel) —
 // inilah "rumus" yang membuat prosentase otomatis muncul begitu Target &
@@ -3104,7 +1623,7 @@ function updateManualKategori(dataKey, containerId, accentHex, field, value) {
   kat[field] = (num === null || Number.isNaN(num)) ? null : num;
   recomputeFunnelDerived(kat);
   saveDataLocal();
-  renderProgresSertipikasi(containerId, kat, accentHex, dataKey);
+  renderSertipikasiHATGabungan();
   pushManualToServer(); // no-op kalau APPS_SCRIPT_URL belum dikonfigurasi
 }
 
@@ -3174,50 +1693,92 @@ function renderFunnel(containerId, stages) {
 }
 
 // ---------- render: Sertipikasi Aset BMN / BMN (Rutin) / BMD Pemprov Banten / BMD Pemkab Lebak / Progres Sertipikasi Tanah Wakaf / Tanah Kas Desa (TKD) ----------
-// v9.1: funnel 8-tahap. Tahap manual SELALU bisa diedit (input number); tahap
-// "auto" (Terdaftar/Pengukuran/Panitia) SEKARANG SELALU auto=true utk SEMUA
-// kategori (formula seragam) — field itu SELALU ditampilkan read-only karena
-// dihitung otomatis dari Posisi_Terakhir/jumlah baris data KKP (kat[s[3]]
-// tetap dievaluasi dari kat.auto di bawah supaya kalau nanti kebijakan
-// berubah lagi, cukup ubah nilai .auto per kategori tanpa ubah kode render).
-function renderProgresSertipikasi(containerId, kat, accentHex, dataKey) {
-  const el = document.getElementById(containerId);
+// Digabung jadi 1 halaman/tab (permintaan user) — 6 kategori sebelumnya
+// terpisah-pisah di tab masing-masing. Sekarang ditampilkan berderet ke
+// samping (kotak per kategori, sub judul nama kategori), ukuran kotak
+// dipadatkan supaya seluruhnya muat 1 halaman tanpa perlu berpindah tab,
+// plus 1 diagram batang gabungan (Target vs Sertel, jumlah & persentase)
+// untuk membandingkan capaian ke-6 kategori sekaligus.
+const HAT_KATEGORI_DEFS = [
+  ['bmn', PURPLE], ['bmn_rutin', BROWN], ['bmd_pemprov', TEAL],
+  ['bmd_pemkab', GOLD], ['wakaf', GREEN], ['tkd', OLIVE],
+];
+function renderSertipikasiHATGabungan() {
+  const el = document.getElementById('tab-hat');
+  if (!el) return;
   const stageDefs = [
     ['Pemberkasan', 'pemberkasan', 'pct_pemberkasan', true, FUNNEL_COLORS[0]],
-    ['Terdaftar', 'terdaftar', 'pct_terdaftar', !kat.auto, FUNNEL_COLORS[1]],
-    ['Pengukuran', 'pengukuran', 'pct_pengukuran', !kat.auto, FUNNEL_COLORS[2]],
+    ['Terdaftar', 'terdaftar', 'pct_terdaftar', false, FUNNEL_COLORS[1]],
+    ['Pengukuran', 'pengukuran', 'pct_pengukuran', false, FUNNEL_COLORS[2]],
     ['PBT', 'pbt', 'pct_pbt', true, FUNNEL_COLORS[3]],
-    ['Panitia', 'panitia', 'pct_panitia', !kat.auto, FUNNEL_COLORS[4]],
+    ['Panitia', 'panitia', 'pct_panitia', false, FUNNEL_COLORS[4]],
     ['SK Hak', 'sk_hak', 'pct_sk_hak', true, FUNNEL_COLORS[5]],
     ['Sertel', 'sertel', 'pct_sertel', true, FUNNEL_COLORS[6]],
   ];
-  const statCard = (label, val, pctVal, manual, field, color) => `
-    <div class="card">
-      <div class="text-[10px] font-700 text-slate-400 uppercase leading-tight">${label}${manual ? ' <span class="normal-case font-400">(isi manual)</span>' : ' <span class="normal-case font-400">(auto)</span>'}</div>
+  const miniField = (kat, dataKey, accentHex, label, field, pctField, manual, color) => `
+    <div>
+      <div class="text-[8.5px] font-700 text-slate-400 uppercase leading-tight truncate">${label}</div>
       ${manual
-        ? `<input type="number" min="0" class="stat-num text-xl mt-1 w-full border-0 p-0 focus:ring-0 focus:outline-none" style="color:#${color};background:transparent" value="${val != null ? val : ''}" placeholder="—" data-field="${field}">`
-        : `<div class="stat-num text-xl mt-1" style="color:#${color}">${fmtNum(val || 0)}</div>`}
-      <div class="text-[11px] font-700 mt-0.5" style="color:#${color}">${pctVal != null ? fmtDec(pctVal, 1) + '% dari Target' : 'isi Target utk %'}</div>
+        ? `<input type="number" min="0" class="stat-num text-sm mt-0.5 w-full border-0 p-0 focus:ring-0 focus:outline-none" style="color:#${color};background:transparent" value="${kat[field] != null ? kat[field] : ''}" placeholder="—" data-key="${dataKey}" data-accent="${accentHex}" data-field="${field}">`
+        : `<div class="stat-num text-sm mt-0.5" style="color:#${color}">${fmtNum(kat[field] || 0)}</div>`}
+      <div class="text-[8.5px] font-700" style="color:#${color}">${kat[pctField] != null ? fmtDec(kat[pctField], 1) + '%' : '—'}</div>
     </div>`;
   el.innerHTML = `
-    ${titleBoxHTML(kat.label, `Funnel Progres Sertipikasi — Target ➜ Pemberkasan ➜ Terdaftar ➜ Pengukuran ➜ PBT ➜ Panitia ➜ SK Hak ➜ Sertel${kat.auto ? '' : '  (kategori ini seluruhnya diisi manual — belum ada sumber data otomatis)'}`)}
-    <div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-3">
-      <div class="card">
-        <div class="text-[10px] font-700 text-slate-400 uppercase">Target <span class="normal-case font-400">(isi manual)</span></div>
-        <input type="number" min="0" class="stat-num text-xl mt-1 w-full border-0 p-0 focus:ring-0 focus:outline-none" style="color:#${NAVY};background:transparent" value="${kat.target != null ? kat.target : ''}" placeholder="—" data-field="target">
-        <div class="text-[11px] text-slate-400 mt-0.5">bidang/berkas — dasar hitung %</div>
-      </div>
-      ${stageDefs.map(s => statCard(s[0], kat[s[1]], kat[s[2]], s[3], s[1], s[4])).join('')}
+    ${titleBoxHTML('Sertipikasi HAT — Aset BMN, BMD, Wakaf & Tanah Kas Desa', 'Target ➜ Pemberkasan ➜ Terdaftar ➜ Pengukuran ➜ PBT ➜ Panitia ➜ SK Hak ➜ Sertel (Terdaftar/Pengukuran/Panitia otomatis dari sumber data; lainnya diisi manual)')}
+    <div class="space-y-2">
+      ${HAT_KATEGORI_DEFS.map(([dataKey, accentHex]) => {
+        const kat = DATA[dataKey];
+        return `
+        <div class="card py-2.5" style="border-left:4px solid #${accentHex}">
+          <h3 class="font-display font-700 text-xs mb-1.5" style="color:#${accentHex}">${kat.label}${kat.auto ? '' : ' <span class="normal-case font-400 text-slate-400">(seluruhnya manual)</span>'}</h3>
+          <div class="grid grid-cols-4 md:grid-cols-8 gap-2">
+            <div>
+              <div class="text-[8.5px] font-700 text-slate-400 uppercase leading-tight">Target</div>
+              <input type="number" min="0" class="stat-num text-sm mt-0.5 w-full border-0 p-0 focus:ring-0 focus:outline-none" style="color:#${NAVY};background:transparent" value="${kat.target != null ? kat.target : ''}" placeholder="—" data-key="${dataKey}" data-accent="${accentHex}" data-field="target">
+              <div class="text-[8.5px] text-slate-400">bidang/berkas</div>
+            </div>
+            ${stageDefs.map(s => miniField(kat, dataKey, accentHex, s[0], s[1], s[2], s[3], s[4])).join('')}
+          </div>
+          <p class="text-[10px] text-slate-400 italic mt-1">+ ${fmtNum(kat.ditutup || 0)} berkas ditutup (tidak dihitung).</p>
+        </div>`;
+      }).join('')}
     </div>
-    <p class="text-xs text-slate-400 italic">+ ${fmtNum(kat.ditutup || 0)} berkas ditutup (tidak dihitung di atas). Persentase = jumlah tahap ÷ Target — otomatis muncul setelah Target &amp; angka tahap diisi.${kat.auto ? ' Terdaftar/Pengukuran/Panitia dihitung otomatis dari Posisi_Terakhir berkas yang masih dalam proses.' : ''}</p>
     <div class="card">
-      <h3 class="font-display font-700 text-sm mb-3">Diagram Funnel — Tahapan Progres Sertipikasi</h3>
-      <div id="${containerId}Funnel"></div>
+      <h3 class="font-display font-700 text-sm mb-3">Diagram Batang — Target &amp; Sertel per Kategori</h3>
+      <div id="hatBarTargetSertel"></div>
     </div>`;
   el.querySelectorAll('input[data-field]').forEach(inp => {
-    inp.addEventListener('change', () => updateManualKategori(dataKey, containerId, accentHex, inp.dataset.field, inp.value));
+    inp.addEventListener('change', () => updateManualKategori(inp.dataset.key, 'tab-hat', inp.dataset.accent, inp.dataset.field, inp.value));
   });
-  renderFunnel(`${containerId}Funnel`, stageDefs.map(s => ({ label: s[0], value: kat[s[1]], pct: kat[s[2]], color: s[4] })));
+  renderHatBarTargetSertel('hatBarTargetSertel');
+}
+
+// Diagram batang gabungan Target vs Sertel (permintaan user): 1 diagram utk
+// SEMUA kategori sekaligus, hanya menampilkan tahap Target & Sertel, tiap
+// batang diberi label jumlah dan persentase (Sertel ÷ Target masing-masing).
+function renderHatBarTargetSertel(elId) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const kats = HAT_KATEGORI_DEFS.map(([dataKey, accentHex]) => [DATA[dataKey], accentHex]);
+  const maxVal = Math.max(1, ...kats.map(([kat]) => Math.max(kat.target || 0, kat.sertel || 0)));
+  el.innerHTML = kats.map(([kat, color]) => {
+    const pctSertel = kat.target ? fmtDec(pctOf(kat.sertel || 0, kat.target), 1) + '%' : '—';
+    const targetW = Math.max(2, (kat.target || 0) / maxVal * 100);
+    const sertelW = Math.max(2, (kat.sertel || 0) / maxVal * 100);
+    return `<div class="mb-3">
+      <div class="text-[11px] font-700 text-slate-600 mb-1">${kat.label}</div>
+      <div class="flex items-center gap-2 mb-1 text-xs">
+        <div class="w-16 text-slate-400 shrink-0">Target</div>
+        <div class="flex-1 bg-slate-100 rounded h-5 overflow-hidden"><div class="h-5 rounded" style="width:${targetW}%;background:#${SLATE}"></div></div>
+        <div class="w-24 font-700 text-right shrink-0">${fmtNum(kat.target || 0)}</div>
+      </div>
+      <div class="flex items-center gap-2 text-xs">
+        <div class="w-16 text-slate-400 shrink-0">Sertel</div>
+        <div class="flex-1 bg-slate-100 rounded h-5 overflow-hidden"><div class="h-5 rounded" style="width:${sertelW}%;background:#${color}"></div></div>
+        <div class="w-24 font-700 text-right shrink-0" style="color:#${color}">${fmtNum(kat.sertel || 0)} (${pctSertel})</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ---------- render: PTSL (SHAT saja — PBT dihapus, bukan pekerjaan Seksi Penetapan Hak dan Pendaftaran) ----------
@@ -3227,14 +1788,13 @@ function renderPTSL() {
   el.innerHTML = `
     ${titleBoxHTML('PTSL — Progres SHAT (Yuridis / Penerbitan Sertipikat)', 'Percepatan Pendaftaran Tanah Sistematis Lengkap')}
     <div class="card">
-      <p class="text-[11px] text-slate-400 italic mb-1">Target resmi = 8.000 bidang — semua % dihitung terhadap itu (Puldadis = baseline data fisik, bukan target)</p>
       <!-- v9.10 — Poin 4: batang aksen warna (border-left) di depan caption
            ini, gaya sama dgn accent bar sectionLabel() Halaman 2. -->
       <p class="text-[11px] text-slate-400 italic mb-1" id="shatCakupan" style="border-left:3px solid #${ATR_YELLOW};padding-left:8px"></p>
       <p class="text-[11px] text-amber-700 italic mb-3" id="shatBacklogNote"></p>
       <div class="grid lg:grid-cols-2 gap-4">
         <div>
-          <h3 class="font-700 text-xs text-slate-500 uppercase mb-2">Alur Tahapan (Total)</h3>
+          <h3 class="font-700 text-xs text-slate-500 uppercase mb-2">Progres K1 SHAT PTSL</h3>
           <div id="shatFunnel" class="space-y-2"></div>
           <!-- v9.8 — Poin 1 (angka "nempel" ke pembatas): tiap kolom angka
                diberi padding (pr-4/pl-4) menjauhi pembatas tengah. Poin 2
@@ -3242,7 +1802,7 @@ function renderPTSL() {
                (border:3px double), pembatas tengah dilembutkan jadi batang
                pendek berujung bulat (bukan garis lurus setinggi penuh). -->
           <div class="rounded-lg mt-3 px-4 py-3" style="background:#FDF1F0;border:3px double #F1C4BE">
-            <div class="text-sm font-800" style="color:#C0392B">RESIDU SHAT — per Tahun</div>
+            <div class="text-sm font-800" style="color:#C0392B">RESIDU PTSL</div>
             <div class="flex items-stretch mt-2">
               <div class="pr-4">
                 <div class="stat-num text-xl" style="color:#C0392B" id="shatResidu2026">0</div>
@@ -3258,7 +1818,7 @@ function renderPTSL() {
           </div>
         </div>
         <div>
-          <h3 class="font-700 text-xs text-slate-500 uppercase mb-2" style="border-left:3px solid #${ATR_BLUE};padding-left:8px">Sebaran Tahapan Potensi K1 per Desa</h3>
+          <h3 class="font-700 text-xs text-slate-500 uppercase mb-2" style="border-left:3px solid #${ATR_BLUE};padding-left:8px">Sebaran Potensi K1</h3>
           <div class="overflow-x-auto max-h-96 overflow-y-auto"><table class="rtbl" id="shatTable"></table></div>
         </div>
       </div>
@@ -3303,7 +1863,7 @@ function renderPTSL() {
   const tahap = [...shat.tahapan_k1].sort((a, b) => b.potensi_k1 - a.potensi_k1);
   const tt = shat.tahapan_k1_total;
   document.getElementById('shatTable').innerHTML = `
-    <thead><tr><th>Desa</th><th>Potensi K1</th><th>Pengumuman</th><th>Pengesahan</th><th>Proses Sertipikat</th></tr></thead>
+    <thead><tr><th>Desa/Kecamatan</th><th>Potensi K1</th><th>Pengumuman</th><th>Pengesahan</th><th>Proses Sertipikat</th></tr></thead>
     <tbody>${tahap.map(t => `<tr><td>${t.wilayah}</td><td>${fmtNum(t.potensi_k1)}</td><td>${fmtNum(t.pengumuman)}</td><td>${fmtNum(t.pengesahan)}</td><td>${fmtNum(t.proses_sertipikat)}</td></tr>`).join('')}</tbody>
     <tfoot><tr class="font-700" style="border-top:2px solid #0f3e54"><td>TOTAL</td><td>${fmtNum(tt.potensi_k1)}</td><td>${fmtNum(tt.pengumuman)}</td><td>${fmtNum(tt.pengesahan)}</td><td>${fmtNum(tt.proses_sertipikat)}</td></tr></tfoot>`;
 }
@@ -3312,12 +1872,7 @@ function renderAll() {
   renderDataAsOf();
   renderRingkasan();
   renderLayananHarian();
-  renderProgresSertipikasi('tab-bmn', DATA.bmn, PURPLE, 'bmn');
-  renderProgresSertipikasi('tab-bmdpemprov', DATA.bmd_pemprov, TEAL, 'bmd_pemprov');
-  renderProgresSertipikasi('tab-bmdpemkab', DATA.bmd_pemkab, GOLD, 'bmd_pemkab');
-  renderProgresSertipikasi('tab-wakaf', DATA.wakaf, GREEN, 'wakaf');
-  renderProgresSertipikasi('tab-bmnrutin', DATA.bmn_rutin, BROWN, 'bmn_rutin');
-  renderProgresSertipikasi('tab-tkd', DATA.tkd, OLIVE, 'tkd');
+  renderSertipikasiHATGabungan();
   renderPTSL();
   renderPrintView();
 }
@@ -3722,26 +2277,6 @@ document.getElementById('btnExportPptx').addEventListener('click', () => {
     renderKegiatanListTahunPptx(s3, kegList, cx + 0.2, listY3, dW3 - 0.4, kegAvailH3, color);
   });
 
-  // v9.6 - mirror PERSIS kalimat per tahun "Menunggu di Seksi Survei dan
-  // Pemetaan" di build_pptx.js (menggantikan box 3-angka lama).
-  const spy3 = dY3 + dCardH3 + 0.18;
-  const sp3 = DATA.survei_pemetaan_crossmetric;
-  const tahunVal3 = (arr, tahun) => { const f = (arr || []).find(x => x[0] === tahun); return f ? f[1] : 0; };
-  const spTahunSet3 = new Set(['2025', '2026']);
-  [sp3.dalam_proses_per_tahun, sp3.akan_jatuh_tempo_per_tahun, sp3.overdue_per_tahun].forEach(arr => (arr || []).forEach(x => spTahunSet3.add(x[0])));
-  const spTahunList3 = Array.from(spTahunSet3).sort();
-  s3.addText('LAYANAN SEKSI PENETAPAN HAK DAN PENDAFTARAN — MENUNGGU PROSES PADA SEKSI SURVEI DAN PEMETAAN', { x: 0.6, y: spy3, w: 12.13, h: 0.22, fontFace: 'Calibri', fontSize: 9, bold: true, color: GREEN, isTextBox: true, margin: 0 });
-  const spRowH3 = 0.6, spGap3 = 0.08, spRowY03 = spy3 + 0.26;
-  spTahunList3.forEach((tahun, i) => {
-    const dp = tahunVal3(sp3.dalam_proses_per_tahun, tahun);
-    const ajt = tahunVal3(sp3.akan_jatuh_tempo_per_tahun, tahun);
-    const jt = tahunVal3(sp3.overdue_per_tahun, tahun);
-    const by = spRowY03 + i * (spRowH3 + spGap3);
-    s3.addShape(pres.ShapeType.roundRect, { x: 0.6, y: by, w: 12.13, h: spRowH3, rectRadius: 0.06, fill: { color: 'EAF6EC' }, line: { color: ATR_GREEN, width: 1 } });
-    const sentence3 = `Layanan ${TARGET_SEKSI} Tahun ${tahun} yang belum dapat diproses karena posisi berkas masih berada pada Seksi Survei dan Pemetaan, terdiri dari Dalam Proses ${fmtNum(dp)} berkas, Akan Jatuh Tempo ${fmtNum(ajt)} berkas, Jatuh Tempo ${fmtNum(jt)} berkas.`;
-    s3.addText(sentence3, { x: 0.8, y: by, w: 11.73, h: spRowH3, fontFace: 'Calibri', fontSize: 10.5, bold: true, color: GREEN, isTextBox: true, margin: 0, valign: 'middle' });
-  });
-
   // ---------- Slide grid Sertipikasi HAT (BMN/BMN Rutin/BMD Pemprov/BMD
   // Pemkab/Wakaf/TKD) — v9.3: DIPADATKAN JADI 1 HALAMAN (mirror PERSIS
   // kategoriMiniCard()/grid slide di build_pptx.js), grid 6 kartu mini
@@ -3794,9 +2329,43 @@ document.getElementById('btnExportPptx').addEventListener('click', () => {
     });
   }
 
+  // v9.18 — Poin 7 (permintaan user): diagram batang gabungan Target &
+  // Sertel utk ke-6 kategori sekaligus, mirror PERSIS slide tambahan yang
+  // sama di build_pptx.js — dashboard/mirror-export/PPTX resmi harus
+  // konsisten.
+  {
+    const s = pres.addSlide();
+    s.background = { color: OFFWHITE };
+    pptxTitleBox(s, 'Sertipikasi HAT — Diagram Batang Target & Sertel per Kategori');
+    const kategoriListBar = [
+      [DATA.bmn, PURPLE], [DATA.bmn_rutin, BROWN], [DATA.bmd_pemprov, TEAL],
+      [DATA.bmd_pemkab, GOLD], [DATA.wakaf, GREEN], [DATA.tkd, OLIVE],
+    ];
+    const maxValBar = Math.max(1, ...kategoriListBar.map(([kat]) => Math.max(kat.target || 0, kat.sertel || 0)));
+    const labelXb = 0.6, labelWb = 1.0, barXb = labelXb + labelWb + 0.1, barWb = 8.2, numXb = barXb + barWb + 0.15, numWb = 1.8;
+    const rhb = 0.28, rgapb = 0.06, groupGapb = 0.16;
+    let yb = CONTENT_Y + 0.15;
+    kategoriListBar.forEach(([kat, color]) => {
+      s.addText(kat.label, { x: labelXb, y: yb, w: 12.13 - labelXb, h: 0.22, fontFace: 'Calibri', fontSize: 10.5, bold: true, color: NAVY, isTextBox: true, margin: 0 });
+      yb += 0.26;
+      const targetWb = Math.max(0.06, (kat.target || 0) / maxValBar * barWb);
+      s.addText('Target', { x: labelXb, y: yb, w: labelWb, h: rhb, fontFace: 'Calibri', fontSize: 8.5, color: SLATE, isTextBox: true, margin: 0, valign: 'middle' });
+      s.addShape(pres.ShapeType.roundRect, { x: barXb, y: yb, w: barWb, h: rhb, rectRadius: 0.03, fill: { color: 'E9EEF2' }, line: { type: 'none' } });
+      s.addShape(pres.ShapeType.roundRect, { x: barXb, y: yb, w: targetWb, h: rhb, rectRadius: 0.03, fill: { color: SLATE }, line: { type: 'none' } });
+      s.addText(fmtNum(kat.target || 0), { x: numXb, y: yb, w: numWb, h: rhb, fontFace: 'Cambria', fontSize: 10, bold: true, color: SLATE, isTextBox: true, margin: 0, valign: 'middle' });
+      yb += rhb + rgapb;
+      const sertelWb = Math.max(0.06, (kat.sertel || 0) / maxValBar * barWb);
+      s.addText('Sertel', { x: labelXb, y: yb, w: labelWb, h: rhb, fontFace: 'Calibri', fontSize: 8.5, color, isTextBox: true, margin: 0, valign: 'middle' });
+      s.addShape(pres.ShapeType.roundRect, { x: barXb, y: yb, w: barWb, h: rhb, rectRadius: 0.03, fill: { color: 'E9EEF2' }, line: { type: 'none' } });
+      s.addShape(pres.ShapeType.roundRect, { x: barXb, y: yb, w: sertelWb, h: rhb, rectRadius: 0.03, fill: { color }, line: { type: 'none' } });
+      s.addText(`${fmtNum(kat.sertel || 0)}  (${fmtPct(kat.pct_sertel)})`, { x: numXb, y: yb, w: numWb, h: rhb, fontFace: 'Cambria', fontSize: 10, bold: true, color, isTextBox: true, margin: 0, valign: 'middle' });
+      yb += rhb + rgapb + groupGapb;
+    });
+  }
+
   const s6 = pres.addSlide();
   s6.background = { color: OFFWHITE };
-  pptxTitleBox(s6, 'PTSL — Progres SHAT (Yuridis / Penerbitan Sertipikat)', `Target resmi = ${fmtNum(smx.target_shat)} bidang — semua % dihitung terhadap itu (Puldadis = baseline data fisik, bukan target)`);
+  pptxTitleBox(s6, 'PTSL — Progres SHAT (Yuridis / Penerbitan Sertipikat)');
   // v9.10 — Poin 4: batang aksen warna (mirror PERSIS build_pptx.js).
   s6.addShape(pres.ShapeType.rect, { x: 0.6, y: CONTENT_Y + 0.03, w: 0.06, h: 0.16, fill: { color: ATR_YELLOW }, line: { type: 'none' } });
   s6.addText(`Target K1 SHAT ${fmtNum(smx.target_shat)} bid, terdiri dari ${fmtNum(smx.jumlah_kecamatan)} Kecamatan, ${fmtNum(smx.jumlah_desa)} Desa/Kelurahan.`, { x: 0.6 + 0.14, y: CONTENT_Y, w: 11.5 - 0.14, h: 0.24, fontFace: 'Calibri', fontSize: 9.5, italic: true, color: '8A6D00', isTextBox: true, margin: 0 });
@@ -3824,7 +2393,7 @@ document.getElementById('btnExportPptx').addEventListener('click', () => {
   const resFrameGap = 0.035;
   s6.addShape(pres.ShapeType.roundRect, { x: resBoxX, y: resY, w: resBoxW, h: resBoxH, rectRadius: 0.075, fill: { type: 'none' }, line: { color: 'F1C4BE', width: 2.25 } });
   s6.addShape(pres.ShapeType.roundRect, { x: resBoxX + resFrameGap, y: resY + resFrameGap, w: resBoxW - resFrameGap * 2, h: resBoxH - resFrameGap * 2, rectRadius: 0.05, fill: { color: 'FDF1F0' }, line: { color: 'F1C4BE', width: 0.75 } });
-  s6.addText('RESIDU SHAT — per Tahun', { x: labelX + 0.14, y: resY + 0.06, w: resBoxW - 0.28, h: 0.22, fontFace: 'Calibri', fontSize: 11, bold: true, color: RESIDU_RED, isTextBox: true, margin: 0 });
+  s6.addText('RESIDU PTSL', { x: labelX + 0.14, y: resY + 0.06, w: resBoxW - 0.28, h: 0.22, fontFace: 'Calibri', fontSize: 11, bold: true, color: RESIDU_RED, isTextBox: true, margin: 0 });
   // v9.8 — Poin 1: jarak (resPad) antara angka & pembatas; Poin 2: pembatas
   // dilembutkan jadi batang pendek berujung bulat.
   const resInnerX = labelX + 0.14, resInnerW = resBoxW - 0.28;
@@ -3847,14 +2416,14 @@ document.getElementById('btnExportPptx').addEventListener('click', () => {
   const tahap6 = [...DATA.ptsl.shat.tahapan_k1].sort((a, b) => b.potensi_k1 - a.potensi_k1);
   const tt6 = DATA.ptsl.shat.tahapan_k1_total;
   // v9.10 — Poin 4: pakai sectionLabel() (mirror PERSIS build_pptx.js).
-  sectionLabel(s6, 'Sebaran Tahapan Potensi K1 per Desa', 7.5, CONTENT_Y + 0.15, 5.2, ATR_BLUE);
+  sectionLabel(s6, 'SEBARAN POTENSI K1', 7.5, CONTENT_Y + 0.15, 5.2, ATR_BLUE);
   const k1TableY6 = CONTENT_Y + 0.55, k1TableBottomMax6 = 7.15;
   const k1NRows6 = tahap6.length + 2;
   const k1RowH6 = Math.max(0.14, Math.min(0.32, (k1TableBottomMax6 - k1TableY6) / k1NRows6));
   const k1FontSize6 = Math.max(6, Math.min(8.5, k1RowH6 * 27));
-  const headerRow6 = ['Desa', 'Potensi K1', 'Pengumuman', 'Pengesahan', 'Proses Sertipikat'].map(t => ({ text: t, options: { bold: true, color: WHITE, fill: { color: NAVY }, fontSize: k1FontSize6 } }));
+  const headerRow6 = ['Desa/Kecamatan', 'Potensi K1', 'Pengumuman', 'Pengesahan', 'Proses Sertipikat'].map(t => ({ text: t, options: { bold: true, color: WHITE, fill: { color: NAVY }, fontSize: k1FontSize6 } }));
   const bodyRows6 = tahap6.map(t => [
-    { text: t.wilayah.replace('Kec. ', ''), options: { fontSize: k1FontSize6, color: SLATE } },
+    { text: t.wilayah, options: { fontSize: k1FontSize6, color: SLATE } },
     { text: fmtNum(t.potensi_k1), options: { fontSize: k1FontSize6, color: SLATE, align: 'center' } },
     { text: fmtNum(t.pengumuman), options: { fontSize: k1FontSize6, color: SLATE, align: 'center' } },
     { text: fmtNum(t.pengesahan), options: { fontSize: k1FontSize6, color: SLATE, align: 'center' } },
@@ -3868,7 +2437,7 @@ document.getElementById('btnExportPptx').addEventListener('click', () => {
     { text: fmtNum(tt6.proses_sertipikat), options: { fontSize: k1FontSize6, bold: true, color: WHITE, fill: { color: SLATE }, align: 'center' } },
   ];
   const k1RowHArr6 = new Array(k1NRows6).fill(k1RowH6);
-  s6.addTable([headerRow6, ...zebraRows(bodyRows6), totalRow6], { x: 7.5, y: k1TableY6, w: 5.2, rowH: k1RowHArr6, colW: [1.55, 0.85, 1.05, 0.85, 0.9], border: { type: 'solid', color: 'E2E8ED', pt: 0.5 }, autoPage: false });
+  s6.addTable([headerRow6, ...zebraRows(bodyRows6), totalRow6], { x: 7.5, y: k1TableY6, w: 5.2, rowH: k1RowHArr6, colW: [2.05, 0.75, 0.9, 0.75, 0.75], border: { type: 'solid', color: 'E2E8ED', pt: 0.5 }, autoPage: false });
 
   const s7 = pres.addSlide();
   s7.background = { color: NAVY_DARK };
@@ -3958,6 +2527,14 @@ async function liveRefresh(opts) {
 }
 
 document.getElementById('btnRefreshLive').addEventListener('click', () => liveRefresh({ manual: true }));
+document.getElementById('btnResetCache').addEventListener('click', () => {
+  if (!confirm('Hapus data tersimpan di browser ini dan muat ulang dari file? Isian manual yang belum di-"Simpan Data Manual" akan hilang.')) return;
+  try {
+    localStorage.removeItem('paparan_mingguan_data_v4');
+    localStorage.removeItem('paparan_mingguan_data_v4_savedAt');
+  } catch (e) {}
+  location.reload();
+});
 document.getElementById('btnSaveManualJson').addEventListener('click', () => {
   if (!DATA) { alert('Belum ada data untuk disimpan.'); return; }
   exportManualJSON();
@@ -3985,6 +2562,12 @@ document.getElementById('fileManualJson').addEventListener('change', (e) => {
 // ---------- init ----------
 function loadInitialData() {
   document.getElementById('headerLogo').src = LOGO_DATA_URI;
+  // v9.19 — link "Buka Sumber Data" ke Google Sheets DATA PAPARAN, supaya
+  // pengelola kegiatan bisa langsung klik & koreksi data mentah dari
+  // dashboard. Dipakai link pendek (bit.ly) buatan user sendiri — lebih
+  // gampang diingat/dibagikan drpd URL Google Sheets yang panjang. Kalau
+  // suatu saat link pendeknya diganti, cukup ubah 1 baris ini.
+  document.getElementById('linkGoogleSheet').href = 'https://bit.ly/data_paparan';
   if (APPS_SCRIPT_URL) {
     const wrap = document.getElementById('pengisiWrap');
     wrap.classList.remove('hidden');
@@ -3995,9 +2578,19 @@ function loadInitialData() {
   }
   // Tampilkan dulu data tersimpan/seed secepat mungkin (agar tidak blank),
   // lalu coba tarik data live dari Google Sheets di belakang layar.
+  // v9.19 — cache localStorage HANYA dipakai kalau tanggal simpannya >=
+  // tanggal seed (bukan tanpa syarat spt sebelumnya) DAN datanya lolos
+  // validasi dasar — supaya seed baru (hasil build_all.py terbaru) selalu
+  // menang atas cache lama begitu file index.html diganti (lihat catatan
+  // panjang di saveDataLocal()).
+  const seedDate = (window.__PAPARAN_SEED__ && window.__PAPARAN_SEED__.generated_at) || '';
   try {
     const saved = localStorage.getItem('paparan_mingguan_data_v4');
-    if (saved) { DATA = JSON.parse(saved); renderAll(); }
+    const savedAt = localStorage.getItem('paparan_mingguan_data_v4_savedAt') || '';
+    if (saved && savedAt >= seedDate) {
+      const parsed = JSON.parse(saved);
+      if (cacheMasihValid(parsed)) { DATA = parsed; renderAll(); }
+    }
   } catch (e) {}
   if (!DATA && window.__PAPARAN_SEED__) { DATA = window.__PAPARAN_SEED__; renderAll(); }
   liveRefresh();
@@ -4235,31 +2828,13 @@ function renderPrintView() {
      <div style="font-size:8.5px;font-style:italic;color:#445566;margin-top:10px">+ ${fmtNum(bd.total)} berkas ditutup (${fmtRupiah(bd.pnbp)} PNBP) — tidak dihitung sebagai Layanan Harian aktif.</div>`
   );
 
-  // Halaman 3: Layanan Harian — v9.6: tabel "Jenis Kegiatan Terbanyak"/
-  // "Rincian Posisi Terakhir" DIHAPUS (permintaan user), diganti rincian
-  // penuh jenis kegiatan di bawah tiap gauge + kalimat per tahun untuk box
-  // "Menunggu di Seksi Survei dan Pemetaan" (dipersempit ke kegiatan Seksi
-  // Penetapan Hak dan Pendaftaran, lihat survei_pemetaan_crossmetric).
-  const spP = DATA.survei_pemetaan_crossmetric;
-  const spPTahunSet = new Set(['2025', '2026']);
-  [spP.dalam_proses_per_tahun, spP.akan_jatuh_tempo_per_tahun, spP.overdue_per_tahun].forEach(arr => (arr || []).forEach(x => spPTahunSet.add(x[0])));
-  const spPTahunList = Array.from(spPTahunSet).sort();
-  const spPTahunVal = (arr, tahun) => { const f = (arr || []).find(x => x[0] === tahun); return f ? f[1] : 0; };
-  const spPSentencesHtml = spPTahunList.map(tahun => {
-    const dp = spPTahunVal(spP.dalam_proses_per_tahun, tahun);
-    const ajt = spPTahunVal(spP.akan_jatuh_tempo_per_tahun, tahun);
-    const jt = spPTahunVal(spP.overdue_per_tahun, tahun);
-    return `<div style="border:1px solid #82D922;background:#EAF6EC;border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:10px;font-weight:700;color:#1D8A5E">Layanan ${TARGET_SEKSI} Tahun ${tahun} yang belum dapat diproses karena posisi berkas masih berada pada Seksi Survei dan Pemetaan, terdiri dari Dalam Proses ${fmtNum(dp)} berkas, Akan Jatuh Tempo ${fmtNum(ajt)} berkas, Jatuh Tempo ${fmtNum(jt)} berkas.</div>`;
-  }).join('');
   const pLayanan = printPageWrap(
     `<h2>Layanan Harian — ${TARGET_SEKSI}</h2><p>${fmtNum(lh.total)} berkas aktif · ${fmtNum(lh.selesai)} selesai · ${fmtNum(lh.dalam_proses)} dalam proses · ${fmtNum(lh.akan_jatuh_tempo)} akan jatuh tempo · ${fmtNum(lh.overdue)} jatuh tempo</p>`,
     `<div style="display:flex;gap:12px;margin-bottom:10px;align-items:stretch">
        ${printGaugeHTML('Dalam Proses', lh.dalam_proses, lh.total, '#0F3E54', lh.dalam_proses_per_tahun_kegiatan, lh.dalam_proses_per_tahun)}
        ${printGaugeHTML('Akan Jatuh Tempo', lh.akan_jatuh_tempo, lh.total, '#D4A017', lh.akan_jatuh_tempo_per_tahun_kegiatan, lh.akan_jatuh_tempo_per_tahun)}
        ${printGaugeHTML('Jatuh Tempo', lh.overdue, lh.total, '#C0392B', lh.overdue_per_tahun_kegiatan, lh.overdue_per_tahun)}
-     </div>
-     <div style="font-size:8px;font-weight:800;color:#1D8A5E;text-transform:uppercase;letter-spacing:.02em;margin-bottom:4px">${TARGET_SEKSI} — Menunggu Proses pada Seksi Survei dan Pemetaan</div>
-     ${spPSentencesHtml}`
+     </div>`
   );
 
   // Halaman 4: Sertipikasi HAT — v9.3 DIPADATKAN 1 halaman (grid 6 kartu
@@ -4270,6 +2845,36 @@ function renderPrintView() {
       [DATA.bmn, PURPLE], [DATA.bmn_rutin, BROWN], [DATA.bmd_pemprov, TEAL],
       [DATA.bmd_pemkab, GOLD], [DATA.wakaf, GREEN], [DATA.tkd, OLIVE],
     ])
+  );
+
+  // Halaman 7b — v9.18 — Poin 7 (permintaan user): diagram batang gabungan
+  // Target & Sertel per kategori, mirror PERSIS renderHatBarTargetSertel()
+  // di dashboard live, supaya PDF konsisten dgn tampilan HTML & PPTX.
+  const kategoriListBarPrint = [
+    [DATA.bmn, PURPLE], [DATA.bmn_rutin, BROWN], [DATA.bmd_pemprov, TEAL],
+    [DATA.bmd_pemkab, GOLD], [DATA.wakaf, GREEN], [DATA.tkd, OLIVE],
+  ];
+  const maxValBarPrint = Math.max(1, ...kategoriListBarPrint.map(([kat]) => Math.max(kat.target || 0, kat.sertel || 0)));
+  const barChartHtml = kategoriListBarPrint.map(([kat, color]) => {
+    const targetWp = Math.max(2, (kat.target || 0) / maxValBarPrint * 100);
+    const sertelWp = Math.max(2, (kat.sertel || 0) / maxValBarPrint * 100);
+    return `<div style="margin-bottom:10px">
+      <div style="font-size:10px;font-weight:700;color:#0F3E54;margin-bottom:3px">${kat.label}</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;font-size:8.5px">
+        <div style="width:44px;flex-shrink:0;color:#445566">Target</div>
+        <div style="flex:1;background:#E9EEF2;border-radius:4px;height:14px;overflow:hidden"><div style="width:${targetWp}%;height:100%;background:#445566"></div></div>
+        <div style="width:110px;flex-shrink:0;text-align:right;font-family:Cambria,serif;font-weight:700;color:#445566">${fmtNum(kat.target || 0)}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:8.5px">
+        <div style="width:44px;flex-shrink:0;color:#${color}">Sertel</div>
+        <div style="flex:1;background:#E9EEF2;border-radius:4px;height:14px;overflow:hidden"><div style="width:${sertelWp}%;height:100%;background:#${color}"></div></div>
+        <div style="width:110px;flex-shrink:0;text-align:right;font-family:Cambria,serif;font-weight:700;color:#${color}">${fmtNum(kat.sertel || 0)}  (${fmtPct(kat.pct_sertel)})</div>
+      </div>
+    </div>`;
+  }).join('');
+  const pKategoriBar = printPageWrap(
+    `<h2>Sertipikasi HAT — Diagram Batang Target &amp; Sertel per Kategori</h2>`,
+    barChartHtml
   );
 
   // Halaman 8: PTSL
@@ -4292,7 +2897,7 @@ function renderPrintView() {
   // dilembutkan jadi batang pendek berujung bulat (bukan garis lurus kaku
   // setinggi penuh kotak).
   const residuHtml = `<div style="border:3px double #F1C4BE;background:#FDF1F0;border-radius:8px;padding:10px 12px;margin-top:10px">
-    <div style="font-size:11px;font-weight:800;color:#C0392B;margin-bottom:6px">RESIDU SHAT — per Tahun</div>
+    <div style="font-size:11px;font-weight:800;color:#C0392B;margin-bottom:6px">RESIDU PTSL</div>
     <div style="display:flex;align-items:stretch">
       <div style="flex:1;padding-right:18px">
         <div style="font-family:Cambria,serif;font-size:20px;font-weight:800;color:#C0392B">${fmtNum(sm.residu_2026)}</div>
@@ -4313,14 +2918,14 @@ function renderPrintView() {
   // halaman diselaraskan jadi "Target resmi = ... bidang ..." spt 3 jalur
   // kode lain), diberi accent bar spt heading lain di halaman Ringkasan.
   const pPTSL = printPageWrap(
-    `<h2>PTSL — Progres SHAT (Yuridis / Penerbitan Sertipikat)</h2><p>Target resmi = ${fmtNum(sm.target_shat)} bidang — semua % dihitung terhadap itu (Puldadis = baseline data fisik, bukan target)</p>`,
+    `<h2>PTSL — Progres SHAT (Yuridis / Penerbitan Sertipikat)</h2>`,
     `<div style="font-size:9.5px;font-style:italic;color:#8A6D00;margin-bottom:8px"><span style="display:inline-block;width:5px;height:11px;background:#${ATR_YELLOW};margin-right:6px;vertical-align:-1px"></span>Target K1 SHAT ${fmtNum(sm.target_shat)} bid, terdiri dari ${fmtNum(sm.jumlah_kecamatan)} Kecamatan, ${fmtNum(sm.jumlah_desa)} Desa/Kelurahan.</div>
      <div style="display:flex;gap:16px">
        <div style="flex:1">${ptslFunnelHtml}${residuHtml}</div>
        <div style="flex:1">
-         <div style="font-size:9.5px;font-weight:700;color:#0F3E54;margin-bottom:4px"><span style="display:inline-block;width:5px;height:11px;background:#${ATR_BLUE};margin-right:6px;vertical-align:-1px"></span>Sebaran Tahapan Potensi K1 per Desa</div>
+         <div style="font-size:9.5px;font-weight:700;color:#0F3E54;margin-bottom:4px"><span style="display:inline-block;width:5px;height:11px;background:#${ATR_BLUE};margin-right:6px;vertical-align:-1px"></span>SEBARAN POTENSI K1</div>
          <table class="ztbl" style="width:100%;font-size:8px;border-collapse:collapse">
-           <thead><tr style="background:#0F3E54;color:#fff"><th style="padding:3px 4px;text-align:left">Desa</th><th style="padding:3px 4px">Potensi K1</th><th style="padding:3px 4px">Pengumuman</th><th style="padding:3px 4px">Pengesahan</th><th style="padding:3px 4px">Proses Sertipikat</th></tr></thead>
+           <thead><tr style="background:#0F3E54;color:#fff"><th style="padding:3px 4px;text-align:left">Desa/Kecamatan</th><th style="padding:3px 4px">Potensi K1</th><th style="padding:3px 4px">Pengumuman</th><th style="padding:3px 4px">Pengesahan</th><th style="padding:3px 4px">Proses Sertipikat</th></tr></thead>
            <tbody>${tahapRows}
            <tr style="font-weight:700"><td style="padding:3px 4px;background:#445566;color:#fff">TOTAL (${DATA.ptsl.shat.tahapan_k1.length} desa)</td><td style="padding:3px 4px;text-align:center;background:#445566;color:#fff">${fmtNum(tt.potensi_k1)}</td><td style="padding:3px 4px;text-align:center;background:#445566;color:#fff">${fmtNum(tt.pengumuman)}</td><td style="padding:3px 4px;text-align:center;background:#445566;color:#fff">${fmtNum(tt.pengesahan)}</td><td style="padding:3px 4px;text-align:center;background:#445566;color:#fff">${fmtNum(tt.proses_sertipikat)}</td></tr>
            </tbody>
@@ -4329,11 +2934,23 @@ function renderPrintView() {
      </div>`
   );
 
-  root.innerHTML = pJudul + pRingkasan + pLayanan + pKategoriGrid + pPTSL;
+  root.innerHTML = pJudul + pRingkasan + pLayanan + pKategoriGrid + pKategoriBar + pPTSL;
 }
 document.getElementById('btnExportPdf').addEventListener('click', () => {
   if (!DATA) { alert('Belum ada data untuk di-export.'); return; }
   renderPrintView();
+  // v9.18 — Poin "Optimalkan halaman": ditemukan dari PDF yang diunggah user
+  // bahwa hasil cetak bisa keluar Letter/Portrait dgn header/footer browser
+  // (tanggal, URL, nomor halaman) kalau dialog cetak TIDAK diatur manual ke
+  // Lanskap/A4/Tanpa Margin/Tanpa Header-Footer — halaman CSS ini sendiri
+  // sudah mendeklarasikan `@page{size:A4 landscape}`, tapi sebagian driver
+  // cetak (mis. "Microsoft Print to PDF" di Windows, atau mencetak file HTML
+  // langsung lewat menu klik-kanan Explorer bukan lewat tombol ini) TIDAK
+  // membaca aturan ini dan memakai default OS (Letter/Potret) — akibatnya
+  // sebagian besar isi halaman terpotong (kolom kartu tidak muat lebar).
+  // Peringatan eksplisit ditambahkan supaya user tahu 4 pengaturan wajib di
+  // dialog cetak SEBELUM menyimpan sbg PDF.
+  alert('Sebelum menyimpan, pastikan di dialog cetak (Ctrl+P):\n\n1. Tujuan = "Simpan sebagai PDF" (Save as PDF) — JANGAN pilih printer/driver lain seperti "Microsoft Print to PDF".\n2. Tata Letak = Lanskap (Landscape).\n3. Ukuran kertas = A4.\n4. Margin = Tidak ada / Minimum.\n5. Matikan "Header dan footer" (uncheck), supaya tanggal/URL/nomor halaman browser tidak ikut tercetak.\n\nKalau pengaturan ini tidak diubah manual, sebagian isi halaman bisa terpotong karena kertas jadi Potret/Letter, bukan Lanskap/A4 sesuai desain.');
   window.print();
 });
 
