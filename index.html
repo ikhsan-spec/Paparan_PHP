@@ -1145,7 +1145,14 @@ function prosesSHAT(text) {
   };
   for (const r of rows) {
     const c0 = norm(r[0]), c1 = norm(r[1]);
-    if ((c0 === 'no.' || c0 === 'no') && c1 === 'wilayah') { inSection2 = true; continue; }
+    // v9.20 — BUG NYATA ditemukan setelah dashboard live di GitHub Pages:
+    // export CSV live via Google Sheets (gviz/tq) ternyata mengosongkan sel
+    // header 'No.' di tabel "Sebaran Potensi K1" (row[0] jadi '' bukan 'No.'
+    // seperti di file CSV hasil download manual sebelumnya) — deteksi header
+    // yang mensyaratkan c0=='no.'/'no' gagal, seluruh tabel jadi 0. Diperbaiki:
+    // cukup andalkan c1=='wilayah' saja (sudah terbukti unik utk tabel ini,
+    // lihat catatan v9.17 di atas) — tidak lagi mensyaratkan isi kolom 'No.'.
+    if (c1 === 'wilayah') { inSection2 = true; continue; }
     // v9.18 — BUG NYATA (mirror compute_stats.py): kalau tabel ke-3 "Tahun/
     // Jumlah" (RESIDU) ada langsung di bawah tabel 2 dalam SATU file/tab yang
     // sama, inSection2 sebelumnya tidak pernah dimatikan — baris tahun
