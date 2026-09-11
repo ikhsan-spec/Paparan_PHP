@@ -1033,20 +1033,45 @@ function backfillNamaPpatDariSeed(pp) {
   // pada gelar notaris) menjadi HYPERLINK. Saat sel berisi hyperlink hasil
   // auto-convert itu, endpoint gviz (live-fetch anonim) mengembalikan nilai
   // KOSONG utk sel tsb — ini keterbatasan permanen di sisi Google, bukan bug
-  // kode kita. Sbg mitigasi, kalau nama PPAT dari live-fetch kosong padahal
-  // jumlah barisnya SAMA PERSIS dgn data SEED (hasil build_all.py terakhir),
-  // pinjam nama_ppat dari SEED berdasarkan posisi baris yg sama.
+  // kode kita. Sbg mitigasi, kalau nama PPAT dari live-fetch kosong, pinjam
+  // nama_ppat dari SEED (hasil build_all.py terakhir).
+  //
+  // v9.27 — BUG NYATA: versi v9.25 mencocokkan baris SEED↔live berdasarkan
+  // POSISI (index ke-0, ke-1, dst) dan HANYA jalan kalau JUMLAH baris live
+  // dan SEED sama persis. Begitu ada baris ditambah/dihapus/diedit di sheet
+  // (mis. 1 baris "Tercepat" dihapus), jumlah baris jadi beda dari SEED →
+  // seluruh backfill utk label itu DIBATALKAN, bukan cuma baris yg berubah
+  // — semua PPAT lain yg sebetulnya tidak berubah pun ikut tampil "Nama
+  // tidak terbaca". Diperbaiki: sekarang tiap baris live dicocokkan ke SEED
+  // berdasarkan ISI kolom lain yg TIDAK kena masalah hyperlink (tanggal
+  // akta, tanggal pelaporan, jumlah akta, keterangan) — bukan posisinya.
+  // Jadi baris yg datanya tidak berubah tetap kebackfill dgn benar walau
+  // ada baris LAIN yg ditambah/dihapus/diedit. Baris yg BENAR-BENAR baru
+  // (kombinasi datanya belum pernah ada di SEED) tetap akan tampil "Nama
+  // tidak terbaca" sampai SEED-nya diperbarui (jalankan ulang build_all.py
+  // dari CSV download manual) — itu wajar krn kita memang belum pernah
+  // "melihat" nama PPAT utk baris baru itu dari sumber yg bisa dibaca gviz.
   try {
     const seed = window.__PAPARAN_SEED__ && window.__PAPARAN_SEED__.ppat_ppats;
     if (!seed || !seed.pelaporan || !pp || !pp.pelaporan) return pp;
+    const keyOf = (row) => ['tanggal_akta', 'tanggal_pelaporan', 'jumlah_akta', 'keterangan']
+      .map(f => (row && row[f] != null ? String(row[f]).trim().toLowerCase() : ''))
+      .join('|');
     ['tercepat', 'terlambat'].forEach(label => {
       const live = pelaporanKeArray(pp.pelaporan[label]);
       const seedArr = pelaporanKeArray(seed.pelaporan[label]);
-      if (live.length && live.length === seedArr.length) {
-        live.forEach((row, i) => {
-          if (!row.nama_ppat && seedArr[i] && seedArr[i].nama_ppat) row.nama_ppat = seedArr[i].nama_ppat;
-        });
-      }
+      const seedByKey = new Map(); // key -> antrian nama_ppat (jaga2 kalau ada baris kembar persis)
+      seedArr.forEach(r => {
+        if (!r || !r.nama_ppat) return;
+        const k = keyOf(r);
+        if (!seedByKey.has(k)) seedByKey.set(k, []);
+        seedByKey.get(k).push(r.nama_ppat);
+      });
+      live.forEach(row => {
+        if (!row || row.nama_ppat) return;
+        const antrian = seedByKey.get(keyOf(row));
+        if (antrian && antrian.length) row.nama_ppat = antrian.shift();
+      });
       pp.pelaporan[label] = live;
     });
   } catch (e) {}
