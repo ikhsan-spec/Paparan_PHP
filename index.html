@@ -2861,6 +2861,84 @@ document.getElementById('btnExportPptx').addEventListener('click', () => {
   const k1RowHArr6 = new Array(k1NRows6).fill(k1RowH6);
   s6.addTable([headerRow6, ...zebraRows(bodyRows6), totalRow6], { x: 7.5, y: k1TableY6, w: 5.2, rowH: k1RowHArr6, colW: [2.05, 0.75, 0.9, 0.75, 0.75], border: { type: 'solid', color: 'E2E8ED', pt: 0.5 }, autoPage: false });
 
+  // v9.22 — slide "Kualitas Data KW4-5-6" (PKD), mirror PERSIS slide baru di
+  // build_pptx.js (dan renderKW456() di dashboard live) — permintaan user
+  // agar export PPTX client-side ini juga ikut disinkronkan, bukan cuma
+  // generator resmi Python/build_pptx.js. KW456_DATA_AWAL/hitungProgresKW456
+  // dipakai dari fungsi top-level yang sudah ada di file ini (definisi sama
+  // yang dipakai renderKW456() dashboard) — TIDAK didefinisikan ulang di sini
+  // supaya baseline selalu 1 sumber kebenaran dalam file ini.
+  const kwX = DATA.kw456;
+  if (kwX && kwX.status === 'ok') {
+    const sKW = pres.addSlide();
+    sKW.background = { color: OFFWHITE };
+    const bX = KW456_DATA_AWAL, progresX = hitungProgresKW456(kwX);
+    pptxTitleBox(sKW, 'Kualitas Data KW4-5-6 — Peningkatan Kualitas Data (PKD)', `Bidang tanah terdaftar sah, belum terpetakan digital — Data Awal per ${bX.tanggal} — ${fmtNum(kwX.jumlah_wilayah)} desa/kelurahan`);
+    const KW4_COLOR = '2563EB', KW5_COLOR = 'D97706', KW6_COLOR = 'DC2626';
+    function kw456DeltaLineX(d, satuan) {
+      if (d === 0) return { text: 'Tidak ada perubahan dari Data Awal', color: '8CA0AD' };
+      const naik = d > 0;
+      const color = naik ? RED : GREEN;
+      const panah = naik ? '▲' : '▼';
+      return { text: `${panah} ${fmtNum(Math.abs(d))} ${satuan} ${naik ? '(bertambah)' : '(berkurang — progres PKD)'}`, color };
+    }
+    function kw456CardX(s, x, y, w, h, kode, deskripsi, cur, base, prog, accentHex) {
+      s.addShape(pres.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.08, fill: { color: WHITE }, line: { color: accentHex, width: 1.4 } });
+      s.addShape(pres.ShapeType.rect, { x, y, w: 0.06, h, fill: { color: accentHex }, line: { type: 'none' } });
+      const pad = 0.16;
+      s.addText(kode, { x: x + pad, y: y + 0.08, w: w - 2 * pad, h: 0.22, fontFace: 'Calibri', fontSize: 10.5, bold: true, color: accentHex, isTextBox: true, margin: 0 });
+      s.addText(deskripsi, { x: x + pad, y: y + 0.29, w: w - 2 * pad, h: 0.32, fontFace: 'Calibri', fontSize: 6.8, color: SLATE, isTextBox: true, margin: 0, valign: 'top' });
+      s.addText(`${fmtNum(cur.bidang)} bidang`, { x: x + pad, y: y + 0.62, w: w - 2 * pad, h: 0.3, fontFace: 'Cambria', fontSize: 16, bold: true, color: accentHex, isTextBox: true, margin: 0 });
+      s.addText(`${fmtNum(cur.luas)} m²`, { x: x + pad, y: y + 0.9, w: w - 2 * pad, h: 0.2, fontFace: 'Calibri', fontSize: 7.5, color: SLATE, isTextBox: true, margin: 0 });
+      s.addText(`Data Awal (${bX.tanggal}): ${fmtNum(base.bidang)} bidang · ${fmtNum(base.luas)} m²`, { x: x + pad, y: y + 1.14, w: w - 2 * pad, h: 0.28, fontFace: 'Calibri', fontSize: 6.8, color: SLATE, isTextBox: true, margin: 0, valign: 'top' });
+      const dB = kw456DeltaLineX(prog.bidang, 'bidang'), dL = kw456DeltaLineX(prog.luas, 'm²');
+      s.addText([{ text: 'Progres Bidang: ', options: { color: SLATE, bold: true } }, { text: dB.text, options: { color: dB.color, bold: true } }], { x: x + pad, y: y + 1.44, w: w - 2 * pad, h: 0.24, fontFace: 'Calibri', fontSize: 6.6, isTextBox: true, margin: 0, valign: 'top' });
+      s.addText([{ text: 'Progres Luas: ', options: { color: SLATE, bold: true } }, { text: dL.text, options: { color: dL.color, bold: true } }], { x: x + pad, y: y + 1.68, w: w - 2 * pad, h: 0.24, fontFace: 'Calibri', fontSize: 6.6, isTextBox: true, margin: 0, valign: 'top' });
+    }
+    const gcolsX = 4, ggapX = 0.14, gx0X = 0.6, gy0X = CONTENT_Y, ghX = 1.82;
+    const gwX = (12.13 - (gcolsX - 1) * ggapX) / gcolsX;
+    const cardsX = [
+      ['KW 4', 'Data fisik & yuridis lengkap — tinggal dipetakan', kwX.kw4, bX.kw4, progresX.kw4, KW4_COLOR],
+      ['KW 5', 'Yuridis lengkap, data fisik/peta perlu perbaikan', kwX.kw5, bX.kw5, progresX.kw5, KW5_COLOR],
+      ['KW 6', 'Fisik, yuridis & peta semua perlu pembenahan', kwX.kw6, bX.kw6, progresX.kw6, KW6_COLOR],
+      ['TOTAL KW 4+5+6', 'Total backlog kualitas data belum terpetakan', kwX.total, bX.total, progresX.total, NAVY],
+    ];
+    cardsX.forEach((c, i) => kw456CardX(sKW, gx0X + i * (gwX + ggapX), gy0X, gwX, ghX, c[0], c[1], c[2], c[3], c[4], c[5]));
+
+    const pctKW4X = pctOf(kwX.kw4.bidang, kwX.total.bidang), pctKW5X = pctOf(kwX.kw5.bidang, kwX.total.bidang), pctKW6X = pctOf(kwX.kw6.bidang, kwX.total.bidang);
+    const analisaYX = gy0X + ghX + 0.13, analisaHX = 1.05;
+    sKW.addShape(pres.ShapeType.roundRect, { x: 0.6, y: analisaYX, w: 12.13, h: analisaHX, rectRadius: 0.06, fill: { color: WHITE }, line: { color: 'E2E8ED', width: 1 } });
+    const analisaTextX = `Total backlog kualitas data saat ini ${fmtNum(kwX.total.bidang)} bidang (${fmtNum(kwX.total.luas)} m²) tersebar di ${fmtNum(kwX.jumlah_wilayah)} desa/kelurahan — bidang tanah yang SUDAH terdaftar sah (memiliki buku tanah) tetapi BELUM terpetakan digital pada peta pendaftaran spasial. KW4 (${fmtDec(pctKW4X, 1)}%, ${fmtNum(kwX.kw4.bidang)} bidang): data fisik & yuridis sudah lengkap, tinggal dipetakan — kategori paling ringan. KW5 (${fmtDec(pctKW5X, 1)}%, ${fmtNum(kwX.kw5.bidang)} bidang): kategori TERBESAR — yuridis lengkap, tapi data fisik/peta spasial masih perlu perbaikan. KW6 (${fmtDec(pctKW6X, 1)}%, ${fmtNum(kwX.kw6.bidang)} bidang): URGENSI TERTINGGI — fisik, yuridis, dan peta spasial semuanya perlu pembenahan/rekonstruksi ulang, paling berisiko overlapping/sengketa batas. Menuntaskan backlog ini — terutama KW6 — mencegah tumpang tindih batas tanah antar pemilik, menghindari klaim/sertipikat ganda akibat data spasial belum terintegrasi, dan memastikan kepastian hukum letak/batas/koordinat bidang tanah pada sistem pendaftaran digital (tujuan Peningkatan Kualitas Data/PKD).`;
+    sKW.addText(analisaTextX, { x: 0.75, y: analisaYX + 0.07, w: 11.83, h: analisaHX - 0.12, fontFace: 'Calibri', fontSize: 7.2, color: NAVY_DARK, isTextBox: true, margin: 0, valign: 'top', lineSpacingMultiple: 1.1 });
+
+    const tableYX = analisaYX + analisaHX + 0.13;
+    const tblGapX = 0.2, tblWX = (12.13 - tblGapX) / 2, tblX2X = 0.6 + tblWX + tblGapX;
+    sectionLabel(sKW, '10 Besar Desa/Kelurahan — Total Backlog KW4+5+6', 0.6, tableYX, tblWX, ATR_BLUE);
+    sectionLabel(sKW, '10 Besar Desa/Kelurahan — KW6 (Urgensi Tertinggi)', tblX2X, tableYX, tblWX, ATR_YELLOW);
+    const topWilayahX = (kwX.per_wilayah || []).slice().sort((a, bb) => bb.total_bidang - a.total_bidang).slice(0, 10);
+    const topKW6X = (kwX.per_wilayah || []).slice().sort((a, bb) => bb.kw6_bidang - a.kw6_bidang).slice(0, 10);
+    const twHeaderX = ['Desa/Kelurahan', 'KW4', 'KW5', 'KW6', 'Total'].map(t => ({ text: t, options: { fontSize: 7, bold: true, color: WHITE, fill: { color: NAVY } } }));
+    const twRowsX = topWilayahX.map(w => [
+      { text: w.wilayah, options: { fontSize: 6.8, color: SLATE } },
+      { text: fmtNum(w.kw4_bidang), options: { fontSize: 6.8, color: SLATE, align: 'right' } },
+      { text: fmtNum(w.kw5_bidang), options: { fontSize: 6.8, color: SLATE, align: 'right' } },
+      { text: fmtNum(w.kw6_bidang), options: { fontSize: 6.8, bold: true, color: KW6_COLOR, align: 'right' } },
+      { text: fmtNum(w.total_bidang), options: { fontSize: 6.8, bold: true, color: NAVY, align: 'right' } },
+    ]);
+    const k6HeaderX = ['Desa/Kelurahan', 'KW6 (bidang)', 'KW6 (m²)'].map(t => ({ text: t, options: { fontSize: 7, bold: true, color: WHITE, fill: { color: NAVY } } }));
+    const k6RowsX = topKW6X.map(w => [
+      { text: w.wilayah, options: { fontSize: 6.8, color: SLATE } },
+      { text: fmtNum(w.kw6_bidang), options: { fontSize: 6.8, bold: true, color: KW6_COLOR, align: 'right' } },
+      { text: fmtNum(w.kw6_luas), options: { fontSize: 6.8, color: SLATE, align: 'right' } },
+    ]);
+    const twRowHX = 0.155;
+    if (twRowsX.length) sKW.addTable([twHeaderX, ...zebraRows(twRowsX)], { x: 0.6, y: tableYX + 0.22, w: tblWX, h: twRowHX * (twRowsX.length + 1), colW: [tblWX - 1.6, 0.4, 0.4, 0.4, 0.4], border: { type: 'solid', color: 'E2E8ED', pt: 0.5 }, autoPage: false, margin: [0.02, 0.05, 0.02, 0.05] });
+    if (k6RowsX.length) sKW.addTable([k6HeaderX, ...zebraRows(k6RowsX)], { x: tblX2X, y: tableYX + 0.22, w: tblWX, h: twRowHX * (k6RowsX.length + 1), colW: [tblWX - 1.9, 0.95, 0.95], border: { type: 'solid', color: 'E2E8ED', pt: 0.5 }, autoPage: false, margin: [0.02, 0.05, 0.02, 0.05] });
+
+    const catatanYX = tableYX + 0.22 + twRowHX * (Math.max(twRowsX.length, k6RowsX.length) + 1) + 0.1;
+    sKW.addText(`Catatan data: total kolom "KW 456"/"Luas KW 456" bawaan sheet sedikit berbeda dari jumlah KW4+KW5+KW6 yang dihitung langsung di sini pada sejumlah kecil baris — angka pada halaman ini dihitung langsung dari kolom KW4/KW5/KW6 per baris, bukan dari kolom total sheet.`, { x: 0.6, y: catatanYX, w: 12.13, h: 0.3, fontFace: 'Calibri', fontSize: 6.6, italic: true, color: SLATE, isTextBox: true, margin: 0 });
+  }
+
   const s7 = pres.addSlide();
   s7.background = { color: NAVY_DARK };
   s7.addShape(pres.ShapeType.rect, { x: 0.8, y: 2.6, w: 1.2, h: 0.045, fill: { color: ATR_GREEN }, line: { type: 'none' } });
