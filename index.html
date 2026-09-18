@@ -532,6 +532,11 @@ const SHEET_SHAT_PTSL = { id: DATA_PAPARAN_SHEET_ID, sheetName: 'Progres SHAT_PT
 const SHEET_LAYANAN_PRIORITAS = { id: DATA_PAPARAN_SHEET_ID, sheetName: '7 Layanan Prioritas' };
 const SHEET_KINERJA_PPAT = { id: DATA_PAPARAN_SHEET_ID, sheetName: 'Kinerja PPAT' };
 const SHEET_BMN_BMD_WAKAF = { id: DATA_PAPARAN_SHEET_ID, sheetName: 'BMN-BMD-WAKAF' };
+// v9.28 (18 Sept 2026) — tab BARU (terpisah dari SHEET_LAYANAN_PRIORITAS di
+// atas, meski namanya mirip): berisi tabel "PROGRES KW456" (jumlah bidang &
+// luas per Desa/Kelurahan utk kategori KW4/KW5/KW6) — dipakai utk mengisi
+// bagian yg tadinya kosong di halaman "PTSL — Progres SHAT".
+const SHEET_LAYANAN_PRIORITAS_KW456 = { id: DATA_PAPARAN_SHEET_ID, sheetName: '7 Layanan Prioritas - KW456' };
 const sheetCsvUrl = (s) => `https://docs.google.com/spreadsheets/d/${s.id}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(s.sheetName)}`;
 const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5 menit
 let liveStatus = { ok: null, lastSync: null, error: null }; // ok=null artinya belum pernah dicoba
@@ -986,6 +991,64 @@ function parseLayananPrioritas(text) {
   } catch (e) {
     return { status: 'menunggu_sumber_data', catatan: `Spreadsheet 7 Layanan Prioritas belum bisa dibaca (${e.message}).`, items: [] };
   }
+}
+
+// v9.28 — tab "7 Layanan Prioritas - KW456": daftar Desa/Kelurahan dgn jumlah
+// bidang & luas utk kategori KW4/KW5/KW6. Yang ditampilkan di dashboard cuma
+// TOTAL se-Kabupaten (permintaan user: "cukup dijumlahkan, tidak perlu per
+// desa") + narasi Desa/Kelurahan & Kecamatan mana yg terbanyak per kategori
+// (dihitung dari rincian per Desa di sheet, meski rinciannya sendiri TIDAK
+// ditampilkan sbg tabel di dashboard).
+// Struktur sheet: ada blok "7 LAYANAN PRIORITAS" (lain, sudah dipakai
+// SHEET_LAYANAN_PRIORITAS) DI ATAS blok "PROGRES KW456" yg kita mau — jadi
+// baris header yg dicari bukan baris pertama, melainkan baris yg kolom
+// ke-2-nya persis "Nama Wilayah". Baris data diakhiri baris "Jumlah" (total
+// resmi dari sheet, dipakai apa adanya utk angka yg ditampilkan — BUKAN
+// dihitung ulang dari penjumlahan baris, supaya selalu sama dgn sheet sumber
+// kalau suatu saat definisi/cakupan kolom "Jumlah" berubah di sheet).
+function parseKW456(text) {
+  try {
+    const rows = parseCSV(text);
+    const hdrIdx = rows.findIndex(r => (r[1] || '').trim().toLowerCase() === 'nama wilayah');
+    if (hdrIdx === -1) return null;
+    const wilayah = [];
+    let total = null;
+    for (const row of rows.slice(hdrIdx + 1)) {
+      const nama = (row[1] || '').trim();
+      if (!nama) continue;
+      const kw4 = parseSheetNum(row[2]) || 0, luas4 = parseSheetNum(row[3]) || 0;
+      const kw5 = parseSheetNum(row[4]) || 0, luas5 = parseSheetNum(row[5]) || 0;
+      const kw6 = parseSheetNum(row[6]) || 0, luas6 = parseSheetNum(row[7]) || 0;
+      if (nama.toLowerCase() === 'jumlah') { total = { kw4, luas4, kw5, luas5, kw6, luas6 }; continue; }
+      // Beberapa baris rekap (mis. "Kabupaten Lebak") bukan Desa/Kelurahan
+      // sungguhan & tidak berformat "... Kec. <nama>" — dilewati dari analisa
+      // per-Desa/Kecamatan (tetap ikut baris "Jumlah" resmi di atas).
+      const m = nama.match(/Kec\.\s*(.+)$/i);
+      if (!m) continue;
+      wilayah.push({ nama, kecamatan: m[1].trim(), kw4, luas4, kw5, luas5, kw6, luas6 });
+    }
+    if (!wilayah.length) return null;
+    if (!total) {
+      total = wilayah.reduce((a, w) => ({
+        kw4: a.kw4 + w.kw4, luas4: a.luas4 + w.luas4, kw5: a.kw5 + w.kw5,
+        luas5: a.luas5 + w.luas5, kw6: a.kw6 + w.kw6, luas6: a.luas6 + w.luas6,
+      }), { kw4: 0, luas4: 0, kw5: 0, luas5: 0, kw6: 0, luas6: 0 });
+    }
+    const topDesaByField = (field) => wilayah.reduce((best, w) => (w[field] > (best ? best[field] : -1) ? w : best), null);
+    const byKec = {};
+    wilayah.forEach(w => {
+      if (!byKec[w.kecamatan]) byKec[w.kecamatan] = { kecamatan: w.kecamatan, kw4: 0, luas4: 0, kw5: 0, luas5: 0, kw6: 0, luas6: 0 };
+      const b = byKec[w.kecamatan];
+      b.kw4 += w.kw4; b.luas4 += w.luas4; b.kw5 += w.kw5; b.luas5 += w.luas5; b.kw6 += w.kw6; b.luas6 += w.luas6;
+    });
+    const kecList = Object.values(byKec);
+    const topKecByField = (field) => kecList.reduce((best, k) => (k[field] > (best ? best[field] : -1) ? k : best), null);
+    return {
+      total,
+      top_desa: { kw4: topDesaByField('kw4'), kw5: topDesaByField('kw5'), kw6: topDesaByField('kw6') },
+      top_kecamatan: { kw4: topKecByField('kw4'), kw5: topKecByField('kw5'), kw6: topKecByField('kw6') },
+    };
+  } catch (e) { return null; }
 }
 
 function pelaporanKeArray(x) {
@@ -1945,7 +2008,14 @@ function renderPTSL() {
           <div class="overflow-x-auto max-h-96 overflow-y-auto"><table class="rtbl" id="shatTable"></table></div>
         </div>
       </div>
+    </div>
+    <div class="card mt-4">
+      <h3 class="font-700 text-xs text-slate-500 uppercase mb-1" style="border-left:3px solid #${ATR_RED};padding-left:8px">Progres KW456 — Kualitas Data Bidang Belum Terpetakan</h3>
+      <p class="text-[11px] text-slate-400 italic mb-3" id="kw456Cakupan">Sumber: Google Sheet "7 Layanan Prioritas - KW456". Total dijumlahkan se-Kabupaten Lebak.</p>
+      <div id="kw456Body"></div>
     </div>`;
+
+  renderKW456(DATA.ptsl.kw456);
 
   const sm = shat.summary;
   document.getElementById('shatResidu2026').textContent = fmtNum(sm.residu_2026);
@@ -1989,6 +2059,63 @@ function renderPTSL() {
     <thead><tr><th>Desa/Kecamatan</th><th>Potensi K1</th><th>Pengumuman</th><th>Pengesahan</th><th>Proses Sertipikat</th></tr></thead>
     <tbody>${tahap.map(t => `<tr><td>${t.wilayah}</td><td>${fmtNum(t.potensi_k1)}</td><td>${fmtNum(t.pengumuman)}</td><td>${fmtNum(t.pengesahan)}</td><td>${fmtNum(t.proses_sertipikat)}</td></tr>`).join('')}</tbody>
     <tfoot><tr class="font-700" style="border-top:2px solid #0f3e54"><td>TOTAL</td><td>${fmtNum(tt.potensi_k1)}</td><td>${fmtNum(tt.pengumuman)}</td><td>${fmtNum(tt.pengesahan)}</td><td>${fmtNum(tt.proses_sertipikat)}</td></tr></tfoot>`;
+}
+
+// v9.28 — kalimat analisa 1 kategori KW (dipakai 3x oleh renderKW456, satu per
+// KW4/KW5/KW6). Membandingkan Desa/Kelurahan dgn nilai TERTINGGI vs Kecamatan
+// dgn TOTAL tertinggi — kalau beda, itu artinya persoalan kategori tsb di
+// kecamatan itu tersebar di banyak Desa (bukan cuma 1 desa yg menonjol).
+function kw456TopSentence(label, def, field, luasField, kw456) {
+  const d = kw456.top_desa[field], k = kw456.top_kecamatan[field];
+  if (!d || d[field] <= 0) return `<b>${label}</b> — tidak ada bidang berkategori ${label} pada data ini.`;
+  let s = `<b>${label}</b> terbanyak: <b>${d.nama}</b> (${fmtNum(d[field])} bidang, ±${fmtNum(d[luasField])} m²).`;
+  if (k && k.kecamatan !== d.kecamatan && k[field] > d[field]) {
+    s += ` Namun dijumlahkan per Kecamatan, <b>Kec. ${k.kecamatan}</b> justru tertinggi (${fmtNum(k[field])} bidang) — berarti ${label} di kecamatan itu tersebar di beberapa Desa/Kelurahan sekaligus, bukan terpusat di 1 desa.`;
+  } else if (k) {
+    s += ` Kec. ${d.kecamatan} juga Kecamatan dengan ${label} terbanyak (${fmtNum(k[field])} bidang).`;
+  }
+  return s;
+}
+
+// v9.28 — render tabel "PROGRES KW456" (total se-Kabupaten, bukan per Desa —
+// permintaan user) + analisa naratif Desa/Kelurahan & Kecamatan terbanyak per
+// kategori, ditempatkan di halaman "PTSL — Progres SHAT" krn bagian itu masih
+// kosong. Definisi KW4/KW5/KW6 di bawah ini persis seperti diberikan user.
+function renderKW456(kw456) {
+  const body = document.getElementById('kw456Body');
+  if (!kw456) {
+    body.innerHTML = `<p class="text-xs italic text-amber-700">Data Progres KW456 sedang diambil / belum tersedia dari sheet "7 Layanan Prioritas - KW456".</p>`;
+    return;
+  }
+  const t = kw456.total;
+  const cats = [
+    { key: 'kw4', luasKey: 'luas4', label: 'KW 4', color: ATR_GREEN,
+      def: 'Bidang belum terpetakan di peta digital, namun data fisik & yuridis sudah lengkap dan memenuhi syarat.' },
+    { key: 'kw5', luasKey: 'luas5', label: 'KW 5', color: ATR_YELLOW,
+      def: 'Bidang belum terpetakan; data yuridis sudah lengkap, tetapi data fisik & peta spasialnya masih perlu perbaikan/peningkatan kualitas.' },
+    { key: 'kw6', luasKey: 'luas6', label: 'KW 6', color: ATR_RED,
+      def: 'Bidang belum terpetakan; data fisik, data yuridis, DAN peta spasialnya semua masih perlu pembenahan/rekonstruksi ulang.' },
+  ];
+  const cardsHtml = cats.map(c => `
+    <div class="rounded-lg px-4 py-3" style="background:#${c.color}14;border:1px solid #${c.color}55">
+      <div class="text-xs font-800 uppercase" style="color:#${c.color}">${c.label}</div>
+      <div class="flex items-stretch mt-2">
+        <div class="pr-4">
+          <div class="stat-num text-xl" style="color:#${c.color}">${fmtNum(t[c.key])}</div>
+          <div class="text-[10px] text-slate-500 mt-0.5">Bidang</div>
+        </div>
+        <div class="self-center shrink-0" style="width:3px;min-height:32px;border-radius:999px;background:#${c.color}55"></div>
+        <div class="pl-4">
+          <div class="stat-num text-lg" style="color:#${c.color}">${fmtNum(t[c.luasKey])}</div>
+          <div class="text-[10px] text-slate-500 mt-0.5">Luas (m²)</div>
+        </div>
+      </div>
+      <div class="text-[10px] text-slate-500 mt-2 leading-snug">${c.def}</div>
+    </div>`).join('');
+  const narasi = cats.map(c => kw456TopSentence(c.label, c.def, c.key, c.luasKey, kw456)).join(' ');
+  body.innerHTML = `
+    <div class="grid sm:grid-cols-3 gap-3">${cardsHtml}</div>
+    <p class="text-[11px] text-slate-600 leading-relaxed mt-3">${narasi}</p>`;
 }
 
 function renderAll() {
@@ -2614,13 +2741,14 @@ async function liveRefresh(opts) {
     // SHAT_PTSL) yang sudah lebih lama & wajib — kalau null, layanan_prioritas/
     // ppat_ppats jatuh balik ke placeholder & override BMN-BMD-WAKAF dilewati
     // siklus refresh ini (lihat penanganan null di bawah).
-    const [txtAll, txtShat, serverManual, txtLayananPrioritas, txtKinerjaPpat, txtBmnBmdWakaf] = await Promise.all([
+    const [txtAll, txtShat, serverManual, txtLayananPrioritas, txtKinerjaPpat, txtBmnBmdWakaf, txtKw456] = await Promise.all([
       fetchSheetCSV(SHEET_ALL_PROSES),
       fetchSheetCSV(SHEET_SHAT_PTSL),
       fetchManualFromServer(),
       fetchSheetCSV(SHEET_LAYANAN_PRIORITAS).catch(() => null),
       fetchSheetCSV(SHEET_KINERJA_PPAT).catch(() => null),
       fetchSheetCSV(SHEET_BMN_BMD_WAKAF).catch(() => null),
+      fetchSheetCSV(SHEET_LAYANAN_PRIORITAS_KW456).catch(() => null),
     ]);
     if (serverManual) applyServerManual(serverManual); // server = sumber kebenaran field manual kalau APPS_SCRIPT_URL dikonfigurasi
     const manualPrev = {};
@@ -2629,9 +2757,13 @@ async function liveRefresh(opts) {
     const shat = backfillResiduDariSeed(prosesSHAT(txtShat));
     const layanan_prioritas = txtLayananPrioritas != null ? parseLayananPrioritas(txtLayananPrioritas) : r.layanan_prioritas;
     const ppat_ppats = backfillNamaPpatDariSeed(txtKinerjaPpat != null ? parseKinerjaPPAT(txtKinerjaPpat) : r.ppat_ppats);
+    // v9.28 — sama spt layanan_prioritas/ppat_ppats: kalau tab KW456 gagal
+    // diambil siklus ini, pertahankan hasil siklus sebelumnya (DATA.ptsl.kw456
+    // lama) drpd tiba2 hilang dari tampilan.
+    const kw456 = txtKw456 != null ? parseKW456(txtKw456) : ((DATA && DATA.ptsl && DATA.ptsl.kw456) || null);
     DATA = {
       layanan_harian: r.layanan_harian, survei_pemetaan_crossmetric: r.survei_pemetaan_crossmetric, wakaf: r.wakaf, bmn: r.bmn, bmn_rutin: r.bmn_rutin, bmd_pemprov: r.bmd_pemprov, bmd_pemkab: r.bmd_pemkab, tkd: r.tkd,
-      berkas_ditutup: r.berkas_ditutup, layanan_prioritas, ppat_ppats, ptsl: { shat },
+      berkas_ditutup: r.berkas_ditutup, layanan_prioritas, ppat_ppats, ptsl: { shat, kw456 },
     };
     // BMN-BMD-WAKAF: sumber utama 5 field manual, menimpa nilai lokal/server —
     // dipanggil SETELAH applyServerManual() di atas supaya tab ini menang
