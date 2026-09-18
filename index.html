@@ -1651,6 +1651,45 @@ function renderRingkasan() {
       // supaya tidak terikat ke kolom Dibuat/Terdaftar/Belum yang cuma ada
       // di skema v9.15.
       const produkRows = (pp.produk || []).map(p => `<div>${produkAktaLineText(p)}</div>`).join('');
+      // v9.24 (permintaan user, "satukan dalam Paparan Mingguan") — Rekapitulasi
+      // Akta ditampilkan sbg tabel artistik dgn mini bar komposisi Terdaftar
+      // (hijau)/Belum (merah) per jenis akta, DIURUTKAN dari Dibuat terbanyak,
+      // baris ber-nilai 0 di semua kolom dipudarkan (mirror desain HTML mockup
+      // "kinerja_ppat_table.html" yang disetujui user) — HANYA berlaku utk
+      // skema baru (item punya field `dibuat`, lihat produkAktaLineText()
+      // untuk penjelasan 2 skema). Skema lama (per-PPAT, tanpa field `dibuat`)
+      // tetap pakai daftar teks polos (produkRows di atas) karena tidak
+      // punya data Dibuat/Terdaftar/Belum utk digambar sbg bar.
+      const produkBaru = (pp.produk || []).filter(p => p.dibuat !== undefined || p.sudah_terdaftar !== undefined);
+      const produkTableHtml = (() => {
+        if (!produkBaru.length) return '';
+        const rows = produkBaru.slice().sort((a, b) => (b.dibuat || 0) - (a.dibuat || 0));
+        const barRow = (p, i) => {
+          const dibuat = p.dibuat || 0, terdaftar = p.sudah_terdaftar || 0, belum = p.belum_terdaftar || 0;
+          const isZero = dibuat === 0 && terdaftar === 0 && belum === 0;
+          const pctT = dibuat ? (terdaftar / dibuat * 100) : 0, pctB = dibuat ? (belum / dibuat * 100) : 0;
+          const rowBg = isZero ? '#fff' : (i % 2 ? '#F7FAFB' : '#fff');
+          return `<tr style="background:${rowBg};opacity:${isZero ? 0.45 : 1}">
+            <td class="text-[10px] ${isZero ? 'text-slate-400' : 'font-700 text-[#0f3e54]'}" style="padding:3px 8px">${p.jenis_akta || '—'}</td>
+            <td class="text-right text-[10px] font-700" style="padding:3px 8px">${fmtNum(dibuat)}</td>
+            <td class="text-right text-[10px] font-700 text-emerald-600" style="padding:3px 8px">${fmtNum(terdaftar)}</td>
+            <td class="text-right text-[10px] font-700 text-red-600" style="padding:3px 8px">${fmtNum(belum)}</td>
+            <td style="width:78px;padding:3px 8px">${isZero ? '' : `<div style="height:7px;border-radius:4px;background:#E2E8ED;overflow:hidden;display:flex"><div style="height:100%;width:${pctT}%;background:#1D8A5E"></div><div style="height:100%;width:${pctB}%;background:#C0392B"></div></div>`}</td>
+          </tr>`;
+        };
+        return `<div class="text-[10px] font-700 text-slate-400 uppercase mt-2 mb-1">Rekapitulasi Akta</div>
+          <div class="overflow-x-auto max-h-40 overflow-y-auto rounded-md border border-slate-200">
+          <table class="w-full" style="border-collapse:collapse">
+            <thead><tr style="background:#0f3e54">
+              <th class="text-left text-[9px] font-700 text-white uppercase px-2 py-1">Jenis Akta</th>
+              <th class="text-right text-[9px] font-700 text-white uppercase px-2 py-1">Dibuat</th>
+              <th class="text-right text-[9px] font-700 text-white uppercase px-2 py-1">Daftar</th>
+              <th class="text-right text-[9px] font-700 text-white uppercase px-2 py-1">Belum</th>
+              <th class="text-[9px] font-700 text-white uppercase px-2 py-1">Komposisi</th>
+            </tr></thead>
+            <tbody>${rows.map((p, i) => barRow(p, i)).join('')}</tbody>
+          </table></div>`;
+      })();
       const pelaporanObj = pp.pelaporan || {};
       // v9.21 — pelaporanObj.tercepat/.terlambat sekarang ARRAY (bisa lebih
       // dari 1 PPAT seri/tied per label) — render satu baris per entri,
@@ -1678,12 +1717,37 @@ function renderRingkasan() {
             </table></div>
           </div>
           <div class="card">
-            <h3 class="font-display font-700 text-sm mb-1">Kinerja PPAT</h3>
-            <div class="text-[11px] text-slate-500">Total <b class="text-slate-700">${pp.jumlah_total ? fmtNum(pp.jumlah_total.terdaftar_mitra) : '—'}</b> mitra terdaftar</div>
-            ${pp.ppat ? `<div class="text-[11px] text-slate-500 mt-1">PPAT ${fmtNum(pp.ppat.terdaftar_mitra)} (tidak aktif ${fmtNum(pp.ppat.tidak_aktif)}, teguran ${fmtNum(pp.ppat.teguran)})</div>` : ''}
-            ${pp.ppats ? `<div class="text-[11px] text-slate-500">PPATS ${fmtNum(pp.ppats.terdaftar_mitra)} (tidak aktif ${fmtNum(pp.ppats.tidak_aktif)}, teguran ${fmtNum(pp.ppats.teguran)})</div>` : ''}
-            ${produkRows ? `<div class="text-[10px] font-700 text-slate-400 uppercase mt-2">Rekapitulasi Akta</div>
-            <div class="text-[10px] leading-relaxed max-h-32 overflow-y-auto">${produkRows}</div>` : ''}
+            <h3 class="font-display font-700 text-sm mb-2">Kinerja PPAT</h3>
+            <!-- v9.24 (permintaan user, "satukan dalam Paparan Mingguan") — header
+                 artistik: total mitra sbg angka besar + kartu mini PPAT/PPATS dgn
+                 badge Tidak Aktif/Teguran berwarna (hijau=0/aman, merah=ada
+                 masalah), mirror desain "kinerja_ppat_table.html" yang disetujui
+                 user, dipadatkan supaya muat di kolom kanan Ringkasan Paparan
+                 (berdampingan dgn kartu 7 Layanan Prioritas). -->
+            <div class="rounded-lg p-2.5 mb-2" style="background:linear-gradient(135deg,#0f3e54,#154d69)">
+              <div class="text-[9px] font-700 uppercase tracking-wide" style="color:#CADCFC">Total Mitra Terdaftar</div>
+              <div class="text-2xl font-800 text-white leading-tight">${pp.jumlah_total ? fmtNum(pp.jumlah_total.terdaftar_mitra) : '—'}</div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mb-1">
+              ${pp.ppat ? `<div class="rounded-lg border border-slate-200 p-2">
+                <div class="text-[9px] font-700 text-slate-400 uppercase">PPAT</div>
+                <div class="text-lg font-800" style="color:#0f3e54">${fmtNum(pp.ppat.terdaftar_mitra)}</div>
+                <div class="flex flex-wrap gap-1 mt-1">
+                  <span class="text-[9px] font-700 px-1.5 py-0.5 rounded-full ${pp.ppat.tidak_aktif ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}">Nonaktif ${fmtNum(pp.ppat.tidak_aktif)}</span>
+                  <span class="text-[9px] font-700 px-1.5 py-0.5 rounded-full ${pp.ppat.teguran ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}">Teguran ${fmtNum(pp.ppat.teguran)}</span>
+                </div>
+              </div>` : ''}
+              ${pp.ppats ? `<div class="rounded-lg border border-slate-200 p-2">
+                <div class="text-[9px] font-700 text-slate-400 uppercase">PPATS</div>
+                <div class="text-lg font-800" style="color:#0f3e54">${fmtNum(pp.ppats.terdaftar_mitra)}</div>
+                <div class="flex flex-wrap gap-1 mt-1">
+                  <span class="text-[9px] font-700 px-1.5 py-0.5 rounded-full ${pp.ppats.tidak_aktif ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}">Nonaktif ${fmtNum(pp.ppats.tidak_aktif)}</span>
+                  <span class="text-[9px] font-700 px-1.5 py-0.5 rounded-full ${pp.ppats.teguran ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}">Teguran ${fmtNum(pp.ppats.teguran)}</span>
+                </div>
+              </div>` : ''}
+            </div>
+            ${produkTableHtml || (produkRows ? `<div class="text-[10px] font-700 text-slate-400 uppercase mt-2">Rekapitulasi Akta</div>
+            <div class="text-[10px] leading-relaxed max-h-32 overflow-y-auto">${produkRows}</div>` : '')}
             ${pelaporanRows ? `<div class="text-[10px] font-700 text-slate-400 uppercase mt-2">Pelaporan Akta (Tercepat/Terlambat)</div>
             <div class="overflow-x-auto"><table class="rtbl text-[10px]">
               <thead><tr><th></th><th>PPAT</th><th>Keterangan</th></tr></thead>
